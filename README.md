@@ -54,10 +54,26 @@ We will need the credentials in JSON format, so download the ID and secret by cl
 
 ### 2. Download Magister Calendar
 
+You can download the latest release [here](https://github.com/lesander/magister-calendar/releases), or do a `git clone`. Extract the project in a folder and put the earlier downloaded `client_secret.json` in the same directory.
+Your working directory should look somewhat like this:
+```
+├── assets
+│   ├── debug.dump
+│   └── token.json
+├── client_secret.json
+├── config.json
+├── firstrun.js
+├── magister-calendar.js
+└── package.json
+```
+Now we're going to install all the dependencies of Magister Calendar. Do so by running `npm install` inside the working directory. This can take a while, as the package manager will download all the required depencencies, including the dependencies of the dependencies, and so forth.
+
 
 ### 3. Authorize Magister Calendar
 
-Awesome, you're almost ready to start using Magister Calendar. The last thing we need to do before we start the cronjob, is authorize the application with Google. You can do this easily by firing up a terminal and cd'ing to the project folder and running `nodejs firstrun.js`. Make sure you've got the JSON file you downloaded earlier in the same directory and renamed it to `client_secret.json`.
+Awesome, you're almost ready to start using Magister Calendar. The last thing we need to do before we start the cronjob, is authorize the application with Google. You can do this easily by firing up a terminal and cd'ing to the project folder and running `nodejs firstrun.js`. Make sure you've got the JSON file you downloaded earlier in the same directory and have renamed it to `client_secret.json`.
+
+The script will produce an authorization URL you will need to visit in your browser. Click the link and then proceed to login with your Google account. After authorizing your application, you will be redirected to the redirect URL you provided earlier, with an access token attatched to it. Copy that access token and paste it in the terminal running the firstrun.js script. When it's done obtaining the access and refresh token, you're all set!
 
 
 # Using Magister Calendar
