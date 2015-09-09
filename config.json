@@ -1,0 +1,16 @@
+{
+  "calendar": "primary",
+  "period": "default",
+  "day_is_over_time": 16,
+  "magister_url": "",
+  "magister_username": "",
+  "magister_password": "",
+  "remove_cancelled_classes": true,
+  "blacklist": ["", "KWT"],
+  "reminders": [
+    {
+      "method": "popup",
+      "minutes": "5"
+    }
+  ]
+}
