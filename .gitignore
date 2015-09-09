@@ -1,0 +1,7 @@
+node_modules/*
+cache/*
+client_secret.json
+npm-debug.log
+assets/debug.dump
+assets/token.json
+*~
