@@ -20,7 +20,7 @@ var tools = require("./assets/tools.js");
 
 /* Set our settings. */
 var VERSION = "1.0.1";
-var DEBUG = true;
+var DEBUG = false;
 var CONFIG_PATH = "config.json";
 var CLIENT_PATH = "client_secret.json";
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
