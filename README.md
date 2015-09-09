@@ -1,12 +1,13 @@
 <p align="center">
   <img src="http://img.prntscr.com/img?url=http://i.imgur.com/psGRivv.png" alt="Magister Calendar Logo">
 </p>
+
 <p align="center">
   Automatically plan your <a href="http://www.schoolmaster.nl/">Magister</a> appointments in your <a href="https://google.com/calendar">Google calendar</a>.<br/>
   Uses <a href="https://github.com/simplyGits/MagisterJS">Magister.js</a> and the <a href="https://developers.google.com/google-apps/calendar/">Google Calendar API</a>. Written in <a href="https://nodejs.org/">NodeJS</a>.
 </p>
 
-# Getting started
+--
 
 ## Requirements
 - Unix environment (For example Ubuntu, CentOS or Debian)
@@ -18,8 +19,8 @@
 ## Installing
 Make sure that all requirements are present on your system.
 
-### 1. Enabeling the Google Calendar API
-Before being able to use Magister Calendar, you'll have to [enable the Google Calendar API](https://console.developers.google.com/flows/enableapi?apiid=calendar) through the Google Developer Console. Thhis little tutorial will help you get through the maze of Google's Developer Console.
+### 1. Enabling the Google Calendar API
+Before being able to use Magister Calendar, you'll have to [enable the Google Calendar API](https://console.developers.google.com/flows/enableapi?apiid=calendar) through the Google Developer Console. This little tutorial will help you get through the maze of Google's Developer Console.
 
 ![Enable API](http://img.prntscr.com/img?url=http://i.imgur.com/VHo30ws.png)
 
@@ -57,17 +58,20 @@ We will need the credentials in JSON format, so download the ID and secret by cl
 
 ### 2. Download Magister Calendar
 
-You can download the latest release [here](https://github.com/lesander/magister-calendar/releases), or do a `git clone`. Extract the project in a folder and put the earlier downloaded `client_secret.json` in the same directory.
+You can download the latest release [here](https://github.com/lesander/magister-calendar/releases), or do a `git clone https://github.com/lesander/magister-calendar.git`. Extract the project in a folder and put the earlier downloaded `client_secret.json` in the same directory.
 Your working directory should look somewhat like this:
 ```
-├── assets
+├── assets/
 │   ├── debug.dump
 │   └── token.json
+│   └── tools.js
+├── cache/
 ├── client_secret.json
 ├── config.json
 ├── firstrun.js
 ├── magister-calendar.js
-└── package.json
+├── package.json
+└── .gitignore
 ```
 Now we're going to install all the dependencies of Magister Calendar. Do so by running `npm install` inside the working directory. This can take a while, as the package manager will download all the required depencencies, including the dependencies of the dependencies, and so forth.
 
