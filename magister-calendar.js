@@ -16,7 +16,7 @@ var fs = require("fs");
 var Magister = require("magister.js");
 var request = require("request");
 var util = require("util");
-var tools = reqiure("./assets/tools.js");
+var tools = require("./assets/tools.js");
 
 /* Set our settings. */
 var VERSION = "1.0.0";
@@ -95,11 +95,11 @@ Date.prototype.addHours = function(h) {
 /* Determine the period to fetch the appointments for. */
 var PERIOD = {};
 var today = {};
-var today.date = new Date();
-var today.day = new Date().getDay();
-var today.time = new Date().getHours();
-var PERIOD.start = today.date;
-var PERIOD.end = today.date;
+    today.date = new Date();
+    today.day = new Date().getDay();
+    today.time = new Date().getHours();
+    PERIOD.start = today.date;
+    PERIOD.end = today.date;
 
 /* Start our period algorithm. */
 if (typeof(CONFIG.period) == "number") {
@@ -160,7 +160,7 @@ else {
 /* Request a new OAuth2 token. */
 function requestNewToken(config, callback) {
   // Construct the POST request body.
-  var form: {
+  var form = {
     client_id: GOOGLE_CONFIG.client_id,
     client_secret: GOOGLE_CONFIG.client_secret,
     refresh_token: GOOGLE_CONFIG.refresh_token,
@@ -199,7 +199,7 @@ function requestNewToken(config, callback) {
 /* Login to Magister. */
 function magisterLogin() {
   new Magister.Magister({
-    school: {url CONFIG.magister_url},
+    school: {url: CONFIG.magister_url},
     username: CONFIG.magister_username,
     password: CONFIG.magister_password
   }).ready(fetchAppointments);
@@ -356,7 +356,7 @@ function parseAppointments(appointments, currentcourse) {
     };
 
     // Check if the appointment was already cached.
-    var appointment.path = CACHE_PATH + "appointment_" + appointment.id + ".json";
+    appointment.path = CACHE_PATH + "appointment_" + appointment.id + ".json";
     if (fs.existsSync(appointment.path)) {
       tools.log("notice", appointment.id + " Appointment is in cache.");
 
@@ -415,7 +415,7 @@ function calendarItem(action, appointment, googleconfig) {
     "end": {
       "dateTime": appointment.end
     },
-    "reminders" {
+    "reminders": {
       "useDefault": false,
       "overrides": CONFIG.reminders
     }
