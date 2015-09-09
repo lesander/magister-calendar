@@ -1,5 +1,8 @@
 <p align="center">
   <img src="http://img.prntscr.com/img?url=http://i.imgur.com/psGRivv.png" alt="Magister Calendar Logo">
+  <br/>
+  <a href="https://nodei.co/npm/magister-calendar/"><img src="https://nodei.co/npm/magister-calendar.png?mini=true"></a>
+  <a href="http://badge.fury.io/js/magister-calendar"><img src="https://badge.fury.io/js/magister-calendar.svg" alt="npm version" height="18"></a>
 </p>
 
 <p align="center">
@@ -7,7 +10,7 @@
   Uses <a href="https://github.com/simplyGits/MagisterJS">Magister.js</a> and the <a href="https://developers.google.com/google-apps/calendar/">Google Calendar API</a>. Written in <a href="https://nodejs.org/">NodeJS</a>.
 </p>
 
---
+---
 
 ## Requirements
 - Unix environment (For example Ubuntu, CentOS or Debian)
@@ -49,12 +52,62 @@ The script will produce an authorization URL you will need to visit in your brow
 ### 4. Configuring Magister Calendar
 The main configuration file of Magister Calendar is called `config.json` and uses JSON (duuh). You can change the settings to your liking, I'll explain some of the options here.
 
-Please note that before setting up a cronjob, it'd be clever to try out Magister Calendar with your configuration manually, by running `nodejs /path/to/magister-calendar.js` and checking the result for any notices, warnings and errors.
+```json
+{ "calendar": "primary" }
+```
+The calendar we're planning the appointments in. Set to `primary` to use the primary calendar, or another valid [calendar id](https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list).
+
+
+```json
+{ "period": "default" }
+```
+The amount of days to schedule appointments for. When set to `default`, the remaining days of the current week will be loaded, or when it's past `day_is_over_time` on friday (or it's weekend) the next work week will be loaded.
+
+---
+
+```json
+{ "day_is_over_time": 16 }
+```
+To be used in combination with `period="default"`. The value stands for the hour (in 24h format) when the current day will be seen as over by the default period algorithm calculator. For example, when `day_is_over_time=16`, the current day will be seen as over, after 16:00 local time.
+
+---
+
+```json
+{ "magister_url": "", "magister_username": "", "magister_password": "" }
+```
+These three settings are basically the only required settings before you can use Magister Calendar. `magister_url` should be the full URL to the Magister 6 website you normally login to, for example `https://dspierson.magister.net`.
+
+---
+
+```json
+{ "remove_cancelled_classes": true }
+```
+Can be either `true` or `false`. When set to true, Magister Calendar will cancel all appointments on your calendar which have been cancelled in Magister. When set to `false`, only the title of the appointment will be changed.
+
+---
+
+```json
+{ "blacklist": ["", "KWT"] }
+```
+Appointments with descriptions matching items in the blacklist will not be planned in your calendar. By default, appointments from Magister with empty descriptions and with the description "KWT" will be ignored.
+
+---
+
+```json
+{ "reminders": [{"method": "popup", "minutes": 5}] }
+```
+The `reminders` array can be used to get up to 5 different reminders for every appointment. Available methods are `popup`, `email` and `sms`. The `minutes` key stands for the amount of minutes before the start of the appointment, when the reminder will be sent. For more information see the [reminders overrides](https://developers.google.com/google-apps/calendar/v3/reference/events/insert) at the Google Calendar API docs.
+
+---
+
+The default [`config.json`](config.json) file can be found in the root of the project's folder.
+
+Please note that before setting up a cronjob, it'd be clever to try out Magister Calendar with your configuration manually, by running `nodejs /path/to/magister-calendar.js` and checking the result for any thrown notices, warnings and errors.
 
 ### 5. Setting up the cronjob
 Open your favourite cronjob manager and add the command `nodejs /path/to/magister-calendar.js` to the cron file. You should not make the cronjob run more than once per minute, because Magister Calendar can take up to a minute to finish executing.
 
-In this example, we'll be using `crontab`, one of the most common cronjob managers. To start editing your cron file, run `crontab -e`. Add the following line at the end of the file to execute Magister Calendar every minute: 
+In this example, we'll be using `crontab`, one of the most common cronjob managers. To start editing your cron file, run `crontab -e`. Add the following line at the end of the file to execute Magister Calendar every minute:
 `*/1 * * * * nodejs /path/to/magister-calendar.js`. For more on the crontab syntax, [see this article](http://www.adminschoice.com/crontab-quick-reference) or run `man crontab` in a terminal.
 
 ## Using Magister Calendar
