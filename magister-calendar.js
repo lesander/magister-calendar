@@ -464,6 +464,6 @@ function calendarItem(action, appointment, googleconfig) {
 
     // Hooray, we've created/updated the appointment.
     tools.log("info", appointment.id + " " + action.charAt(0).toUpperCase() + action.slice(1) + "d appointment.");
-    console.log(body);
+    if (DEBUG) console.log(body);
   });
 }
