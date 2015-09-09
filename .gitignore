@@ -1,5 +1,6 @@
-node_modules/*
-cache/*
+node_modules/
+cache/
+.git/
 client_secret.json
 npm-debug.log
 assets/debug.dump
