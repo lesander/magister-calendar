@@ -59,20 +59,25 @@ Open your favourite cronjob manager and add the command `nodejs /path/to/magiste
 In this example, we'll be using `crontab`, one of the most common cronjob managers. To start editing your cron file, run `crontab -e`. Add the following line at the end of the file to execute Magister Calendar every minute: 
 `*/1 * * * * nodejs /path/to/magister-calendar.js`. For more on the crontab syntax, [see this article](http://www.adminschoice.com/crontab-quick-reference) or run `man crontab` in a terminal.
 
-# Using Magister Calendar
+## Using Magister Calendar
 Once you've got the cronjob up and running (or ran `magister-calendar.js` successfully at least once), you can check your filled in calendar at [Google Calendar](https://google.com/calendar) or on your favourite calendar application synced with Google Calendar.
 
 
-# Contributing
+## Contributing
 
-Coming to a readme close to you soon..
+If you'd like to contribute to Magister Calendar or file a bug or feature request, please head over to [the issue tracker](https://github.com/lesander/magister-calendar/issues) or [open a pull request](https://github.com/lesander/magister-calendar/compare/).
 
-# Copyright & License
+## License & Disclaimer
+This software is open-sourced under the MIT Licence (see [LICENSE](LICENSE) for the full license). So within some limits, you can do with the code whatever you want. However, if you like and/or want to re-use it, I'd really appreciate a reference to this project page.
 
-Coming to a readme close to you soon..
+The software is provided as is. It might work as expected - or not. Just don't blame me.
 
-# References & Sources
+## References & Sources
 
-https://developers.google.com/google-apps/calendar/
-https://console.developers.google.com/
-http://simplyapps.nl/MagisterJS/docs/
+Google Developers - Calendar API Home: https://developers.google.com/google-apps/calendar/
+
+Google Developers - Console: https://console.developers.google.com/
+
+MagisterJS - Project Home: http://simplyapps.nl/MagisterJS/
+
+MagisterJS - Documentation: http://simplyapps.nl/MagisterJS/docs/
