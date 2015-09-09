@@ -1,8 +1,7 @@
 <p align="center">
-  <img src="http://img.prntscr.com/img?url=http://i.imgur.com/KkOOVkX.png" alt="Magister Calendar Logo">
+  <img src="http://img.prntscr.com/img?url=http://i.imgur.com/psGRivv.png" alt="Magister Calendar Logo">
 </p>
 
-# Magister Calendar
 Automatically plan your [Magister](http://www.schoolmaster.nl/) appointments in your [Google calendar](https://google.com/calendar).
 
 Using [Magister.js](https://github.com/simplyGits/MagisterJS) and the [Google Calendar API](https://developers.google.com/google-apps/calendar/). Written in [NodeJS](https://nodejs.org/).
