@@ -5,7 +5,6 @@
   "keywords": ["magister", "calendar", "planner", "school", "agenda"],
   "homepage": "https://git.io/magister",
   "license": "MIT",
-  "private": true,
   "analyze": true,
   "dependencies": {
     "magister.js": "1.8.x",
@@ -19,6 +18,6 @@
   },
   "bugs": {
     "url": "https://github.com/lesander/magister-calendar/issues",
-    "email": "help@lesander.me"
+    "email": "lesander@xs4all.nl"
   }
 }
