@@ -28,8 +28,6 @@ You can download the latest release [here](https://github.com/lesander/magister-
 Your working directory should look somewhat like this:
 ```
 ├── assets/
-│   ├── debug.dump
-│   └── token.json
 │   └── tools.js
 ├── cache/
 ├── client_secret.json
