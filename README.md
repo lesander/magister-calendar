@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="http://img.prntscr.com/img?url=http://i.imgur.com/KkOOVkX.png" alt="Magister Calendar Logo">
+</p>
+
 # Magister Calendar
 Automatically plan your [Magister](http://www.schoolmaster.nl/) appointments in your [Google calendar](https://google.com/calendar).
 
@@ -78,16 +82,17 @@ The script will produce an authorization URL you will need to visit in your brow
 ### 4. Configuring Magister Calendar
 The main configuration file of Magister Calendar is called `config.json` and uses JSON (duuh). You can change the settings to your liking, I'll explain some of the options here.
 
-...
-
+Please note that before setting up a cronjob, it'd be clever to try out Magister Calendar with your configuration manually, by running `nodejs /path/to/magister-calendar.js` and checking the result for any notices, warnings and errors.
 
 ### 5. Setting up the cronjob
+Open your favourite cronjob manager and add the command `nodejs /path/to/magister-calendar.js` to the cron file. You should not make the cronjob run more than once per minute, because Magister Calendar can take up to a minute to finish executing.
 
-...
+In this example, we'll be using `crontab`, one of the most common cronjob managers. To start editing your cron file, run `crontab -e`. Add the following line at the end of the file to execute Magister Calendar every minute: 
+`*/1 * * * * nodejs /path/to/magister-calendar.js`. For more on the crontab syntax, [see this article](http://www.adminschoice.com/crontab-quick-reference) or run `man crontab` in a terminal.
 
 # Using Magister Calendar
+Once you've got the cronjob up and running (or ran `magister-calendar.js` successfully at least once), you can check your filled in calendar at [Google Calendar](https://google.com/calendar) or on your favourite calendar application synced with Google Calendar.
 
-Coming to a readme close to you soon..
 
 # Contributing
 
