@@ -17,7 +17,7 @@ module.exports = {
     }
     return true;
   },
-  log: function(status, text) {
+  log: function(status, text, error) {
     if (status == "error") {
       var prefix = "!";
     }
@@ -26,6 +26,10 @@ module.exports = {
     }
     var date = new Date();
     var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
-    console.log("[" + prefix + "] " + time + " " + text);
+    var logtext = "[" + prefix + "] " + time + " " + text;
+    if (error) {
+      var logtext = logtext + " " + JSON.stringify(error);
+    }
+    console.log(logtext);
   }
 }
