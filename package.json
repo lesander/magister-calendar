@@ -16,6 +16,9 @@
     "type": "git",
     "url": "https://github.com/lesander/magister-calendar.git"
   },
+  "scripts": {
+    "test": "nodejs magister-calendar.js test"
+  },
   "bugs": {
     "url": "https://github.com/lesander/magister-calendar/issues",
     "email": "lesander@xs4all.nl"
