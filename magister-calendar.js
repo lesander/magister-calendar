@@ -1,5 +1,5 @@
 /**
- * Magister Calendar v1.0.0
+ * Magister Calendar v1.0.1
  * https://git.io/magister
  *
  * Copyright 2015 Sander Laarhoven
@@ -19,7 +19,7 @@ var util = require("util");
 var tools = require("./assets/tools.js");
 
 /* Set our settings. */
-var VERSION = "1.0.0";
+var VERSION = "1.0.1";
 var DEBUG = true;
 var CONFIG_PATH = "config.json";
 var CLIENT_PATH = "client_secret.json";

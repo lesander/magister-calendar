@@ -6,3 +6,4 @@ npm-debug.log
 assets/debug.dump
 assets/token.json
 *~
+version.sh
