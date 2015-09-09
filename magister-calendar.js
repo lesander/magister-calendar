@@ -139,7 +139,7 @@ else {
 
 /* Magister does not look at the time we provide with our stamps,
    so there's no need to set the hours of the dates. */
-tools.log("info", "Determined period is from " + PERIOD.start + " to " + PERIOD.end + ".");
+tools.log("info", "Determined period is:\nFrom " + PERIOD.start + "\nTo " + PERIOD.end + ".");
 
 
 /* =====================
@@ -202,7 +202,9 @@ function magisterLogin() {
     school: {url: CONFIG.magister_url},
     username: CONFIG.magister_username,
     password: CONFIG.magister_password
-  }).ready(fetchAppointments);
+  }).ready(function(err) {
+    fetchAppointments(err, this);
+  });
 }
 
 /* Fetch appointments. */
@@ -234,10 +236,11 @@ function fetchCurrentCourse(magisterlogin, appointments, callback) {
 function blacklisted(appointment, i) {
   for (b = 0; b < CONFIG.blacklist.length; b++) {
     if (appointment._description == CONFIG.blacklist[b]) {
-      tools.log("notice", appointment._id + " Skipping appointment #" + i + " because it's description is on the blacklist.");
-      continue;
+      tools.log("notice", appointment._id + " Skipping appointment because it's description is on the blacklist.");
+      return true;
     }
   }
+  return false;
 }
 
 
