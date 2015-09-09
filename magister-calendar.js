@@ -265,7 +265,7 @@ function blacklisted(appointment, i) {
 function parseAppointments(appointments, currentcourse) {
 
   // Save appointment json for debugging purposes.
-  if (CONFIG.debug) {
+  if (DEBUG) {
     fs.writeFile(CACHE_PATH + "magister-debug.dump", util.inspect(appointments), function(err) {
       if (err) {
         return tools.log("error", "Problem saving magister debug dump to file.", err);
