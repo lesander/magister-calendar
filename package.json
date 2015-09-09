@@ -1,0 +1,24 @@
+{
+  "name": "magister-calendar",
+  "version": "1.0.0",
+  "description": "Automatically plan your Magister appointments in your Google calendar.",
+  "keywords": ["magister", "calendar", "planner", "school", "agenda"],
+  "homepage": "https://git.io/magister",
+  "license": "MIT",
+  "private": true,
+  "analyze": true,
+  "dependencies": {
+    "magister.js": "1.8.x",
+    "util": "0.10.x",
+    "googleapis": "2.1.x",
+    "google-auth-library": "0.9.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lesander/magister-calendar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/lesander/magister-calendar/issues",
+    "email": "help@lesander.me"
+  }
+}
