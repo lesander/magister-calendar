@@ -57,6 +57,7 @@ The main configuration file of Magister Calendar is called `config.json` and use
 ```
 The calendar we're planning the appointments in. Set to `primary` to use the primary calendar, or another valid [calendar id](https://developers.google.com/google-apps/calendar/v3/reference/calendarList/list).
 
+---
 
 ```json
 { "period": "default" }
