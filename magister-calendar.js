@@ -31,6 +31,19 @@ var CACHE_PATH = "cache/";
 /* Say hello to our creator. */
 console.log("Magister Calendar v" + VERSION + " started.");
 
+/* Make sure we have our cache folder. */
+fs.mkdir(CACHE_PATH, function(err) {
+  if (err) {
+    if (err.code != "EEXIST") {
+      tools.log("error", "Could not create folder 'cache/'.", err);
+      process.exit(1);
+    }
+  }
+  else {
+    tools.log("info", "Created cache folder.");
+  }
+});
+
 
 /* =========================
  * Load configuration files.
