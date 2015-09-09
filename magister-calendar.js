@@ -20,7 +20,7 @@ var tools = reqiure("./assets/tools.js");
 
 /* Set our settings. */
 var VERSION = "1.0.0";
-var DEBUG = true,
+var DEBUG = true;
 var CONFIG_PATH = "config.json";
 var CLIENT_PATH = "client_secret.json";
 var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
