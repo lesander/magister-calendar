@@ -446,7 +446,7 @@ function calendarItem(action, appointment, googleconfig) {
   }
 
   // Determine the request method.
-  var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events";
+  var url = "https://www.googleapis.com/calendar/v3/calendars/" + CONFIG.calendar + "/events";
   if (action == "create") {
     var method = "POST";
   }
