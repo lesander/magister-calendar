@@ -25,7 +25,7 @@ module.exports = {
       var prefix = "*";
     }
     var date = new Date();
-    var time = date.getHours() + ":" + date.getMinutes();
+    var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
     console.log("[" + prefix + "] " + time + " " + text);
   }
 }
