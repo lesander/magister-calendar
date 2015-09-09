@@ -105,41 +105,41 @@ var today = {};
 if (typeof(CONFIG.period) == "number") {
   // Fetch appointments for the next given days.
   tools.log("info", "Fetching appointments for the coming " + CONFIG.period + " days.");
-  PERIOD.start.setDate(today.date.getDate());
-  PERIOD.end.setDate(today.date.getDate() + CONFIG.period);
+  PERIOD.start = PERIOD.start.setDate(today.date.getDate());
+  PERIOD.end = PERIOD.end.setDate(today.date.getDate() + CONFIG.period);
 }
 else {
   tools.log("info", "Using default period to fetch appointments for.");
   if (today.day == 6) {
     // Today is saturday, fetch next week.
-    PERIOD.start.setDate(today.date.getDate() + 2);
-    PERIOD.end.setDate(PERIOD.start.getDate() + 5);
+    PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 2);
+    PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + 5);
   }
   else if (today.day == 0) {
     // Today is sunday, fetch next week.
-    PERIOD.start.setDate(today.date.getDate() + 1);
-    PERIOD.end.setDate(PERIOD.start.getDate() + 5);
+    PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 1);
+    PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + 5);
   }
   else if (today.day == 5 && today.time >= CONFIG.day_is_over_time) {
     // Fetch next week, the weekend has just started!
-    PERIOD.start.setDate(today.date.getDate() + 3);
-    PERIOD.end.setDate(PERIOD.start.getDate() + 5);
+    PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 3);
+    PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + 5);
   }
   else if (today.time >= CONFIG.day_is_over_time) {
     // Fetch from tomorrow, this day is over.
-    PERIOD.start.setDate(today.date.getDate() + 1);
-    PERIOD.end.setDate(PERIOD.start.getDate() + ( 5 - PERIOD.start.getDay() ) );
+    PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 1);
+    PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + ( 5 - new Date(PERIOD.start).getDay() ) );
   }
   else {
     // Fetch including tomorrow, this day is not over yet.
-    PERIOD.start.setDate(today.date.getDate() + 0);
-    PERIOD.end.setDate(PERIOD.start.getDate() + ( 5 - PERIOD.start.getDay() ) );
+    PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 0);
+    PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + ( 5 - new Date(PERIOD.start).getDay() ) );
   }
 }
 
 /* Magister does not look at the time we provide with our stamps,
    so there's no need to set the hours of the dates. */
-tools.log("info", "Determined period is:\nFrom " + PERIOD.start + "\nTo " + PERIOD.end + ".");
+tools.log("info", "Determined period is:\nFrom " + new Date(PERIOD.start) + "\nTo " + new Date(PERIOD.end) + ".");
 
 
 /* =====================
@@ -212,7 +212,7 @@ function fetchAppointments(err, magisterlogin) {
   if (err) {
     return tools.log("error", "Could not login to magister.", err);
   }
-  magisterlogin.appointments(PERIOD.start, PERIOD.end, false, function(err, appointments) {
+  magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
     if (err) {
       return tools.log("error", "Problem fetching appointments. ", err);
     }
@@ -236,7 +236,7 @@ function fetchCurrentCourse(magisterlogin, appointments, callback) {
 function blacklisted(appointment, i) {
   for (b = 0; b < CONFIG.blacklist.length; b++) {
     if (appointment._description == CONFIG.blacklist[b]) {
-      tools.log("notice", appointment._id + " Skipping appointment because it's description is on the blacklist.");
+      tools.log("notice", appointment._id + " Skipping blacklisted appointment.");
       return true;
     }
   }
@@ -329,22 +329,22 @@ function parseAppointments(appointments, currentcourse) {
     if (CONFIG.magister_url.indexOf("dspierson") > -1) {
       // Check if we need to change end times for this appointment.
       if (new Date(appointment.begin).getDay() == 2 && appointment.schoolhour == firstBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( firstBreakBeginTuesday[0] - new Date(appointment.end).getTimezoneOffset() );
+        epoch = new Date(appointment.end).setHours( firstBreakBeginTuesday[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
         epoch = new Date(epoch).setMinutes(firstBreakBeginTuesday[1]);
         appointment.end = new Date(epoch).toISOString();
       }
       else if (new Date(appointment.begin).getDay() == 2 && appointment.schoolhour == secondBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( secondBreakBeginTuesday[0] - new Date(appointment.end).getTimezoneOffset() );
+        epoch = new Date(appointment.end).setHours( secondBreakBeginTuesday[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
         epoch = new Date(epoch).setMinutes(secondBreakBeginTuesday[1]);
         appointment.end = new Date(epoch).toISOString();
       }
       else if (appointment.schoolhour == firstBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( firstBreakBegin[0] - new Date(appointment.end).getTimezoneOffset() );
+        epoch = new Date(appointment.end).setHours( firstBreakBegin[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
         epoch = new Date(epoch).setMinutes(firstBreakBegin[1]);
         appointment.end = new Date(epoch).toISOString();
       }
       else if (appointment.schoolhour == secondBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( secondBreakBegin[0] - new Date(appointment.end).getTimezoneOffset() );
+        epoch = new Date(appointment.end).setHours( secondBreakBegin[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
         epoch = new Date(epoch).setMinutes(secondBreakBegin[1]);
         appointment.end = new Date(epoch).toISOString();
       }
@@ -375,7 +375,7 @@ function parseAppointments(appointments, currentcourse) {
       }
 
       // Check if the cached appointment is the same as the current one.
-      if (cache != JSON.stringify(appointment)) {
+      if (JSON.stringify(cache) != JSON.stringify(appointment)) {
         // The cached appointment differs from the live one.
         tools.log("notice", appointment.id + " Appointment has changed.");
         calendarItem("update", appointment, GOOGLE_CONFIG);
@@ -433,16 +433,18 @@ function calendarItem(action, appointment, googleconfig) {
   }
 
   // Determine the request method.
+  var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events";
   if (action == "create") {
     var method = "POST";
   }
   else if (action == "update") {
     var method = "PUT";
+    var url = url + "/" + appointment.id;
   }
 
   // Make the request to Google.
   request({
-    url: "https://www.googleapis.com/calendar/v3/calendars/primary/events/" + appointment.id,
+    url: url,
     method: method,
     json: form,
     headers: {
@@ -457,10 +459,11 @@ function calendarItem(action, appointment, googleconfig) {
 
     // Check for response error.
     if (body.error) {
-      return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", error);
+      return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", body.error);
     }
 
     // Hooray, we've created/updated the appointment.
     tools.log("info", appointment.id + " " + action.charAt(0).toUpperCase() + action.slice(1) + "d appointment.");
+    console.log(body);
   });
 }
