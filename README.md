@@ -1,8 +1,7 @@
 <p align="center">
   <img src="http://img.prntscr.com/img?url=http://i.imgur.com/psGRivv.png" alt="Magister Calendar Logo">
   <br/>
-  <a href="https://nodei.co/npm/magister-calendar/"><img src="https://nodei.co/npm/magister-calendar.png?mini=true"></a>
-  <a href="http://badge.fury.io/js/magister-calendar"><img src="https://badge.fury.io/js/magister-calendar.svg" alt="npm version" height="18"></a>
+  <a href="https://nodei.co/npm/magister-calendar/"><img src="https://nodei.co/npm/magister-calendar.png?compact=true"></a>
 </p>
 
 <p align="center">
