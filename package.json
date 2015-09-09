@@ -1,8 +1,14 @@
 {
   "name": "magister-calendar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Automatically plan your Magister appointments in your Google calendar.",
-  "keywords": ["magister", "calendar", "planner", "school", "agenda"],
+  "keywords": [
+    "magister",
+    "calendar",
+    "planner",
+    "school",
+    "agenda"
+  ],
   "homepage": "https://git.io/magister",
   "license": "MIT",
   "analyze": true,
