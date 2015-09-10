@@ -75,10 +75,39 @@ var GOOGLE_CONFIG = {
 
 /* Check magister values. */
 if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magister_password == "") {
-  tools.log("error", "Magister configuration is not filled in.");
-  process.exit();
+  tools.log("error", "CONFIG PARSE ERROR: Magister configuration is not filled in.");
+  process.exit(1);
 }
 
+/* Check if calendar has a value. */
+if (typeof(CONFIG.calendar != "string") || CONFIG.calendar == "") {
+  tools.log("error", "CONFIG PARSE ERROR: 'calendar' has invalid value.");
+  process.exit(1);
+}
+
+/* Check if period has a valid value. */
+if (typeof(CONFIG.period) != "string" && typeof(CONFIG.period) != "number") {
+  tools.log("error", "CONFIG PARSE ERROR: 'period' has invalid value.");
+  process.exit(1);
+}
+
+/* Check if remove_cancelled_classes has a valid value. */
+if (typeof(CONFIG.remove_cancelled_classes) != "boolean") {
+  tools.log("error", "CONFIG PARSE ERROR: 'remove_cancelled_classes' has invalid value.");
+  process.exit(1);
+}
+
+/* Check if blacklist has a valid value. */
+if (typeof(CONFIG.blacklist) != "object") {
+  tools.log("error", "CONFIG PARSE ERROR: 'blacklist' has invalid value.");
+  process.exit(1);
+}
+
+/* Check if reminders has a valid value. */
+if (typeof(CONFIG.reminders) != "object") {
+  tools.log("error", "CONFIG PARSE ERROR: 'reminders' has invalid value.");
+  process.exit(1);
+}
 
 /* ======================================
  * Determine appointment period to fetch.
