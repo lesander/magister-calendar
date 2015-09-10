@@ -106,8 +106,8 @@ if (typeof(CONFIG.blacklist) != "object") {
 }
 
 /* Check if reminders has a valid value. */
-if (typeof(CONFIG.reminders) != "object") {
-  tools.log("error", "CONFIG PARSE ERROR: 'reminders' has invalid value.");
+if (typeof(CONFIG.reminders) != "object" || CONFIG.reminders.length > 5) {
+  tools.log("error", "CONFIG PARSE ERROR: 'reminders' has invalid value or length.");
   process.exit(1);
 }
 
@@ -446,6 +446,12 @@ function calendarItem(action, appointment, googleconfig) {
       "overrides": CONFIG.reminders
     }
   };
+
+  // Check if we actually have at least one override.
+  if (!form.reminders.overrides[0]) {
+    form.reminders.useDefault: true;
+    form.reminders.overrides = null;
+  }
 
   // Cancel the appointment & send a message if the status is cancelled (5).
   if (appointment.status == 5) {
