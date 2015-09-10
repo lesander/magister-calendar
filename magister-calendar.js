@@ -440,7 +440,14 @@ function calendarItem(action, appointment, googleconfig) {
   // Cancel the appointment & send a message if the status is cancelled (5).
   if (appointment.status == 5) {
     tools.log("notice", appointment.id + " Appointment has been cancelled, updating status.");
-    form.status = "cancelled";
+    // Cancel appointment if config allows it.
+    if (CONFIG.remove_cancelled_classes) {
+      form.status = "cancelled";
+    }
+    else {
+      // Else just add text to summary.
+      form.summary = "[UITVAL] " + form.summary;
+    }
     form.colorId = 4; // Red color scheme.
     sendPushMessage(appointment);
   }
