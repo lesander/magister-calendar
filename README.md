@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="http://img.prntscr.com/img?url=http://i.imgur.com/psGRivv.png" alt="Magister Calendar Logo">
-  <br/>
-  <a href="https://nodei.co/npm/magister-calendar/"><img src="https://nodei.co/npm/magister-calendar.png?compact=true"></a>
+  <img src="assets/magister-calendar.png" alt="Magister Calendar Logo">
+  <br/><br/>
+  <a href="https://nodei.co/npm/magister-calendar/"><img alt="NPM Package Information" src="https://nodei.co/npm/magister-calendar.png?compact=true"></a>
 </p>
 
 <p align="center">
