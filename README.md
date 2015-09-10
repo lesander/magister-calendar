@@ -113,6 +113,7 @@ In this example, we'll be using `crontab`, one of the most common cronjob manage
 ## Using Magister Calendar
 Once you've got the cronjob up and running (or ran `magister-calendar.js` successfully at least once), you can check your filled in calendar at [Google Calendar](https://google.com/calendar) or on your favourite calendar application synced with Google Calendar.
 
+![iOS 9 native Calendar app examples](assets/examples.png)
 
 ## Contributing
 
