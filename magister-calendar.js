@@ -420,7 +420,7 @@ function parseAppointments(appointments, currentcourse) {
     fs.writeFileSync(appointment.path, JSON.stringify(appointment));
 
     // Check if we've had all appointments.
-    if (i == appointments.length) {
+    if (i == appointments.length - 1) {
       tools.log("info", "All appointments have been parsed.");
     }
   }
