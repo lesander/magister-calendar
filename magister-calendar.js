@@ -388,6 +388,12 @@ function parseAppointments(appointments, currentcourse) {
 
       // Obtain cached json.
       var cache = fs.readFileSync(appointment.path, "utf8");
+      if (!tools.validjson(cache)) {
+        tools.log("warning", appointment.id + " Appointment cache has invalid JSON, can't compare. Will save new json to file. Running again.");
+        fs.writeFileSync(appointment.path, JSON.stringify(appointment));
+        i--;
+        continue;
+      }
       var cache = JSON.parse(cache);
 
       // Check if the homework is still the same.
