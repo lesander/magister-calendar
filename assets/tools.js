@@ -53,5 +53,9 @@ module.exports = {
       process.exit(1);
     }
     return JSON.parse(file);
+  },
+  sendPushMessage: function(appointment) {
+    // To be implemented..
+    return;
   }
 }
