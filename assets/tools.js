@@ -6,6 +6,7 @@
  * Licensed under MIT (http://git.io/magister-calendar-license)
  */
 
+var fs = require("fs");
 
 module.exports = {
   validjson: function (string) {
@@ -31,5 +32,26 @@ module.exports = {
       var logtext = logtext + " " + JSON.stringify(error);
     }
     console.log(logtext);
+  },
+  loadJSONfile: function(path) {
+    var file;
+    try {
+      file = fs.readFileSync(path, "utf8");
+    }
+    catch (e) {
+      if (e.code == "ENOENT") {
+        module.exports.log("error", "Config file " + path + " not found.", e);
+        process.exit(1);
+      }
+      else {
+        module.exports.log("error", "An error occured when opening " + path + ".", e);
+        throw e;
+      }
+    }
+    if (!module.exports.validjson(file)) {
+      module.exports.log("error", "File " + path + " contains bogus JSON.");
+      process.exit(1);
+    }
+    return JSON.parse(file);
   }
 }

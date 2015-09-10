@@ -50,28 +50,13 @@ fs.mkdir(CACHE_PATH, function(err) {
  * ========================= */
 
 /* Load the config.json file. */
-var file = fs.readFileSync(CONFIG_PATH, "utf8");
-if (!tools.validjson(file)) {
-  tools.log("error", "Config contains bogus JSON.");
-  process.exit(1);
-}
-var CONFIG = JSON.parse(file);
+var CONFIG = tools.loadJSONfile(CONFIG_PATH);
 
 /* Load the client_secret.json file. */
-var file = fs.readFileSync(CLIENT_PATH, "utf8");
-if (!tools.validjson(file)) {
-  tools.log("error", "Client secret contains bogus JSON.");
-  process.exit(1);
-}
-var CLIENT_SECRET = JSON.parse(file);
+var CLIENT_SECRET = tools.loadJSONfile(CLIENT_PATH);
 
 /* Load our access tokens. */
-var file = fs.readFileSync(TOKEN_PATH, "utf8");
-if (!tools.validjson(file)) {
-  tools.log("error", "Token file contains bogus JSON.");
-  process.exit(1);
-}
-var TOKENS = JSON.parse(file);
+var TOKENS = tools.loadJSONfile(TOKEN_PATH);
 
 /* Set our Google configuration. */
 var GOOGLE_CONFIG = {
