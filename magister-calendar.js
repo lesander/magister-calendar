@@ -84,12 +84,6 @@ if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magist
  * Determine appointment period to fetch.
  * ====================================== */
 
-/* Extend the Date prototype. */
-Date.prototype.addHours = function(h) {
-  this.setTime(this.getTime() + (h*60*60*1000));
-  return this;
-}
-
 /* Determine the period to fetch the appointments for. */
 var PERIOD = {};
 var today = {};
