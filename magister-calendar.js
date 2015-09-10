@@ -74,7 +74,9 @@ var GOOGLE_CONFIG = {
  * ==================== */
 
 /* Check magister values. */
-if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magister_password == "") {
+if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magister_password == "" ||
+    typeof(CONFIG.magister_url) != "string" || typeof(CONFIG.magister_username) != "string" ||
+    typeof(CONFIG.magister_password) != "string") {
   tools.log("error", "CONFIG PARSE ERROR: Magister configuration is not filled in.");
   process.exit(1);
 }
