@@ -455,7 +455,7 @@ function calendarItem(action, appointment, googleconfig) {
 
   // Check if we actually have at least one override.
   if (!form.reminders.overrides[0]) {
-    form.reminders.useDefault: true;
+    form.reminders.useDefault = true;
     form.reminders.overrides = null;
   }
 
