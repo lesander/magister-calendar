@@ -193,6 +193,7 @@ function requestNewToken(config, callback) {
   request.post("https://accounts.google.com/o/oauth2/token", {form: form}, function(err, response, body) {
     if (err) {
       return tools.log("error", "Problem requesting new OAuth2 token.", err);
+      process.exit(1);
     }
     result = JSON.parse(body);
     // Update the Google Config.
