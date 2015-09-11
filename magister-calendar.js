@@ -192,7 +192,7 @@ function requestNewToken(config, callback) {
   // Perform the request.
   request.post("https://accounts.google.com/o/oauth2/token", {form: form}, function(err, response, body) {
     if (err) {
-      return tools.log("error", "Problem requesting new OAuth2 token.", err);
+      tools.log("error", "Problem requesting new OAuth2 token.", err);
       process.exit(1);
     }
     result = JSON.parse(body);
@@ -234,12 +234,12 @@ function magisterLogin() {
 /* Fetch appointments. */
 function fetchAppointments(err, magisterlogin) {
   if (err) {
-    return tools.log("error", "Could not login to magister.", err);
+    tools.log("error", "Could not login to magister.", err);
     process.exit(1);
   }
   magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
     if (err) {
-      return tools.log("error", "Problem fetching appointments. ", err);
+      tools.log("error", "Problem fetching appointments. ", err);
       process.exit(1);
     }
     // We got the appointments, now let's get the current course info.
@@ -251,7 +251,7 @@ function fetchAppointments(err, magisterlogin) {
 function fetchCurrentCourse(magisterlogin, appointments, callback) {
   magisterlogin.currentCourse(function(err, currentcourse) {
     if (err) {
-      return tools.log("error", "Problem fetching current course. ", err);
+      tools.log("error", "Problem fetching current course. ", err);
       process.exit(1);
     }
     // Callback to parseAppointments.
