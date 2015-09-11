@@ -82,7 +82,7 @@ if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magist
 }
 
 /* Check if calendar has a value. */
-if (typeof(CONFIG.calendar != "string") || CONFIG.calendar == "") {
+if (typeof(CONFIG.calendar) != "string" || CONFIG.calendar == "") {
   tools.log("error", "CONFIG PARSE ERROR: 'calendar' has invalid value.");
   process.exit(1);
 }
