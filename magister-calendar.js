@@ -400,7 +400,7 @@ function parseAppointments(appointments, currentcourse) {
       if (cache.homework != appointment.homework) {
         // We'd certainly want to catch the teacher doing this..
         tools.log("notice", appointment.id + " Homework has changed.");
-        sendPushMessage(appointment);
+        tools.sendPushMessage(appointment);
       }
 
       // Check if the cached appointment is the same as the current one.
@@ -471,7 +471,7 @@ function calendarItem(action, appointment, googleconfig) {
       form.summary = "[UITVAL] " + form.summary;
     }
     form.colorId = 4; // Red color scheme.
-    sendPushMessage(appointment);
+    tools.sendPushMessage(appointment);
   }
 
   // Determine the request method.
