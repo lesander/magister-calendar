@@ -1,5 +1,5 @@
 /**
- * Magister Calendar v1.1.2
+ * Magister Calendar v1.1.3
  * https://git.io/magister
  *
  * Copyright 2015 Sander Laarhoven
