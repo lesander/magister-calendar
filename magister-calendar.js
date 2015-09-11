@@ -352,22 +352,22 @@ function parseAppointments(appointments, currentcourse) {
     if (CONFIG.magister_url.indexOf("dspierson") > -1) {
       // Check if we need to change end times for this appointment.
       if (new Date(appointment.begin).getDay() == 2 && appointment.schoolhour == firstBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( firstBreakBeginTuesday[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
+        epoch = new Date(appointment.end).setHours(firstBreakBeginTuesday[0]);
         epoch = new Date(epoch).setMinutes(firstBreakBeginTuesday[1]);
         appointment.end = new Date(epoch).toISOString();
       }
       else if (new Date(appointment.begin).getDay() == 2 && appointment.schoolhour == secondBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( secondBreakBeginTuesday[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
+        epoch = new Date(appointment.end).setHours(secondBreakBeginTuesday[0]);
         epoch = new Date(epoch).setMinutes(secondBreakBeginTuesday[1]);
         appointment.end = new Date(epoch).toISOString();
       }
       else if (appointment.schoolhour == firstBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( firstBreakBegin[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
+        epoch = new Date(appointment.end).setHours(firstBreakBegin[0]);
         epoch = new Date(epoch).setMinutes(firstBreakBegin[1]);
         appointment.end = new Date(epoch).toISOString();
       }
       else if (appointment.schoolhour == secondBreakBeginsNow) {
-        epoch = new Date(appointment.end).setHours( secondBreakBegin[0] /*- (new Date(appointment.end).getTimezoneOffset() / 60)*/ );
+        epoch = new Date(appointment.end).setHours(secondBreakBegin[0]);
         epoch = new Date(epoch).setMinutes(secondBreakBegin[1]);
         appointment.end = new Date(epoch).toISOString();
       }
