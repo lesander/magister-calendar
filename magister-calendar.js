@@ -506,6 +506,6 @@ function calendarItem(action, appointment, googleconfig) {
 
     // Hooray, we've created/updated the appointment.
     tools.log("info", appointment.id + " " + action.charAt(0).toUpperCase() + action.slice(1) + "d appointment.");
-    if (DEBUG) console.log(body);
+    if (DEBUG) fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
   });
 }
