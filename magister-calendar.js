@@ -235,10 +235,12 @@ function magisterLogin() {
 function fetchAppointments(err, magisterlogin) {
   if (err) {
     return tools.log("error", "Could not login to magister.", err);
+    process.exit(1);
   }
   magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
     if (err) {
       return tools.log("error", "Problem fetching appointments. ", err);
+      process.exit(1);
     }
     // We got the appointments, now let's get the current course info.
     fetchCurrentCourse(magisterlogin, appointments, parseAppointments);
@@ -250,6 +252,7 @@ function fetchCurrentCourse(magisterlogin, appointments, callback) {
   magisterlogin.currentCourse(function(err, currentcourse) {
     if (err) {
       return tools.log("error", "Problem fetching current course. ", err);
+      process.exit(1);
     }
     // Callback to parseAppointments.
     callback(appointments, currentcourse);
