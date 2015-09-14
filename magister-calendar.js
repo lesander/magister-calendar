@@ -334,12 +334,16 @@ function parseAppointments(appointments, currentcourse) {
       "end": appointments[i]._end,
       "schoolhour": appointments[i]._beginBySchoolHour,
       "class": appointments[i]._classes[0],
-      "teacher": appointments[i]._teachers[0]._fullName,
       "status": appointments[i]._status,
       "type": appointments[i]._type,
       "homework": "",
       "formatted": {}
     };
+
+    // Add teacher's name if there is any.
+    if (appointments[i]._teachers[0]) {
+     appointment.teacher = appointments[i]._teachers[0]._fullName;
+    }
 
     // Add content (homework) to the appointment if there is any.
     if (appointments[i]._content) {
