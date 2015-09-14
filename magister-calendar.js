@@ -345,6 +345,13 @@ function parseAppointments(appointments, currentcourse) {
      appointment.teacher = appointments[i]._teachers[0]._fullName;
     }
 
+    // Check the ID.
+    if (appointments[i]._id.length < 7 || appointments[i]._id == -1) {
+      var newid = "i" + new Date(appointment.begin).getTime();
+      tools.log("notice", appointment.id + " Appointment has invalid ID, changing to '" + newid + "'.");
+      appointment.id = newid;
+    }
+
     // Add content (homework) to the appointment if there is any.
     if (appointments[i]._content) {
       appointment.homework = appointments[i]._content;
@@ -464,6 +471,16 @@ function calendarItem(action, appointment, googleconfig) {
     form.reminders.overrides = null;
   }
 
+  // Is magister trying to be funny?
+  if (new Date(form.start.dateTime).getTime() > new Date(form.end.dateTime).getTime()) {
+    // The start date is after the end date...
+    tools.log("notice", appointment.id + " Appointment has invalid times, changing to short appointment.");
+    // Let's take the start date and add five minute to set as the end time.
+    var minutes = new Date(form.start.dateTime).getMinutes();
+    var endtime = new Date(form.start.dateTime).setMinutes(minutes + 5);
+    form.end.dateTime = new Date(endtime).toISOString();
+  }
+
   // Cancel the appointment & send a message if the status is cancelled (5).
   if (appointment.status == 5) {
     tools.log("notice", appointment.id + " Appointment has been cancelled, updating status.");
@@ -509,7 +526,14 @@ function calendarItem(action, appointment, googleconfig) {
 
     // Check for response error.
     if (body.error) {
-      return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", body.error);
+      tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", body.error);
+
+      // Check for duplicate.
+      if (body.error.code == "409") {
+        tools.log("notice", appointment.id + " Appointment is a duplicate, updating instead.");
+        calendarItem("update", appointment, googleconfig);
+      }
+      return;
     }
 
     // Hooray, we've created/updated the appointment.
