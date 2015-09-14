@@ -420,9 +420,6 @@ function parseAppointments(appointments, currentcourse) {
       calendarItem("create", appointment, GOOGLE_CONFIG);
     }
 
-    // Cache the appointment to file.
-    fs.writeFileSync(appointment.path, JSON.stringify(appointment));
-
     // Check if we've had all appointments.
     if (i == appointments.length - 1) {
       tools.log("info", "All appointments have been parsed.");
@@ -498,6 +495,9 @@ function calendarItem(action, appointment, googleconfig) {
       "Content-Type": "application/json"
     }
   }, function(err, response, body) {
+    // Debug response to file.
+    if (DEBUG) fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
+
     // Check for request error.
     if (err) {
       return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", err);
@@ -510,6 +510,8 @@ function calendarItem(action, appointment, googleconfig) {
 
     // Hooray, we've created/updated the appointment.
     tools.log("info", appointment.id + " " + action.charAt(0).toUpperCase() + action.slice(1) + "d appointment.");
-    if (DEBUG) fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
+
+    // Cache the appointment to file.
+    fs.writeFileSync(appointment.path, JSON.stringify(appointment));
   });
 }
