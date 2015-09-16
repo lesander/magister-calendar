@@ -270,8 +270,8 @@ function fetchCurrentCourse(magisterlogin, appointments, callback) {
 /* Check if appointment is blacklisted. */
 function blacklisted(appointment, i) {
   for (b = 0; b < CONFIG.blacklist.length; b++) {
-    if (appointment._description == CONFIG.blacklist[b]) {
-      tools.log("notice", appointment._id + " Skipping blacklisted appointment.");
+    if (appointment.description() == CONFIG.blacklist[b]) {
+      tools.log("notice", appointment.id() + " Skipping blacklisted appointment.");
       return true;
     }
   }
@@ -300,7 +300,7 @@ function parseAppointments(appointments, currentcourse) {
      because their appointments always have wrong end times. */
   if (CONFIG.magister_url.indexOf("dspierson") > -1) {
     // Identify the user as upper or lower class.
-    if (currentcourse._group.description >= 4) {
+    if (currentcourse.group().description >= 4) {
       // Bovenbouw (4, 5, 6).
       var group = "bovenbouw";
       tools.log("info", "Identified logged in user as member of upper classes.");
@@ -335,40 +335,33 @@ function parseAppointments(appointments, currentcourse) {
     // Build the appointment object.
     var appointment = {
       "version": "1.0.0",
-      "id": appointments[i]._id,
-      "location": appointments[i]._location,
-      "description": appointments[i]._description,
-      "begin": appointments[i]._begin,
-      "end": appointments[i]._end,
-      "schoolhour": appointments[i]._beginBySchoolHour,
-      "class": appointments[i]._classes[0],
-      "status": appointments[i]._status,
-      "type": appointments[i]._type,
+      "id": appointments[i].id(),
+      "location": appointments[i].location(),
+      "description": appointments[i].description(),
+      "begin": appointments[i].begin(),
+      "end": appointments[i].end(),
+      "schoolhour": appointments[i].beginBySchoolHour(),
+      "class": appointments[i].classes()[0],
+      "status": appointments[i].status(),
+      "type": appointments[i].type(),
       "homework": "",
       "formatted": {}
     };
 
     // Add teacher's name if there is any.
-    if (appointments[i]._teachers[0]) {
-     appointment.teacher = appointments[i]._teachers[0]._fullName;
+    if (appointments[i].teachers().length > 0) {
+     appointment.teacher = appointments[i].teachers()[0].fullName();
     }
 
     // Check the ID.
-    if (appointments[i]._id.length < 7 || appointments[i]._id == -1) {
+    if (appointments[i].id().length < 7 || appointments[i].id() == -1) {
       var newid = "i" + new Date(appointment.begin).getTime();
       tools.log("notice", appointment.id + " Appointment has invalid ID, changing to '" + newid + "'.");
       appointment.id = newid;
     }
 
     // Add content (homework) to the appointment if there is any.
-    if (appointments[i]._content) {
-      appointment.homework = appointments[i]._content;
-    }
-
-    // Strip the homework string of HTML stuff.
-    appointment.homework = appointment.homework.replace("<br/>", "\n");
-    appointment.homework = appointment.homework.replace("&nbsp;", "");
-    appointment.homework = appointment.homework.replace(/(<([^>]+)>)/ig,"");
+    appointment.homework = appointments[i].content();
 
     /* The following block of code is written for a specific school using Magister,
        because their appointments always have wrong end times. */
