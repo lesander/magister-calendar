@@ -163,7 +163,7 @@ else {
   else {
     // It's not saturday, sunday, friday past time, past time (at any day), before time (at any day).
     // What kind of sorcery is this?
-    tools.log("error", "Could not determine period, this should never happen. Please open an issue at GitHub, with all log files.");
+    tools.log("critical", "Could not determine period, this should never happen. Please open an issue at GitHub, with all log files.");
     process.exit(1);
   }
 }
@@ -200,7 +200,7 @@ function requestNewToken(config, callback) {
   // Perform the request.
   request.post("https://accounts.google.com/o/oauth2/token", {form: form}, function(err, response, body) {
     if (err) {
-      tools.log("error", "Problem requesting new OAuth2 token.", err);
+      tools.log("critical", "Problem requesting new OAuth2 token.", err);
       process.exit(1);
     }
     result = JSON.parse(body);
@@ -247,7 +247,7 @@ function fetchAppointments(err, magisterlogin) {
   }
   magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
     if (err) {
-      tools.log("error", "Problem fetching appointments. ", err);
+      tools.log("critical", "Problem fetching appointments. ", err);
       process.exit(1);
     }
     // We got the appointments, now let's get the current course info.
@@ -259,7 +259,7 @@ function fetchAppointments(err, magisterlogin) {
 function fetchCurrentCourse(magisterlogin, appointments, callback) {
   magisterlogin.currentCourse(function(err, currentcourse) {
     if (err) {
-      tools.log("error", "Problem fetching current course. ", err);
+      tools.log("critical", "Problem fetching current course. ", err);
       process.exit(1);
     }
     // Callback to parseAppointments.
@@ -530,6 +530,7 @@ function calendarItem(action, appointment, googleconfig) {
     // Check for request error.
     if (err) {
       return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", err);
+      fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_request_error.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
     }
 
     // Check for response error.
