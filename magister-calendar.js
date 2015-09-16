@@ -149,14 +149,22 @@ else {
     PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + 5);
   }
   else if (today.time >= CONFIG.day_is_over_time) {
+    // Today is either monday, tuesday, wednesday or thursday past day_is_over_time.
     // Fetch from tomorrow, this day is over.
     PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 1);
     PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + ( 5 - new Date(PERIOD.start).getDay() ) );
   }
-  else {
+  else if (today.time <= CONFIG.day_is_over_time && today.day <= 5 && today.day >= 1) {
+    // Today is either monday, tuesday, wednesday, thursday or friday before day_is_over_time.
     // Fetch including tomorrow, this day is not over yet.
     PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 0);
     PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + ( 5 - new Date(PERIOD.start).getDay() ) );
+  }
+  else {
+    // It's not saturday, sunday, friday past time, past time (at any day), before time (at any day).
+    // What kind of sorcery is this?
+    tools.log("error", "Could not determine period, this should never happen. Please open an issue at GitHub, with all log files.");
+    process.exit(1);
   }
 }
 
@@ -412,14 +420,14 @@ function parseAppointments(appointments, currentcourse) {
       var cache = JSON.parse(cache);
 
       // Check if the homework is still the same.
-      if (cache.homework != appointment.homework) {
+      if (cache.homework !== appointment.homework) {
         // We'd certainly want to catch the teacher doing this..
         tools.log("notice", appointment.id + " Homework has changed.");
         tools.sendPushMessage(appointment);
       }
 
       // Check if the cached appointment is the same as the current one.
-      if (JSON.stringify(cache) != JSON.stringify(appointment)) {
+      if (JSON.stringify(cache) !== JSON.stringify(appointment)) {
         // The cached appointment differs from the live one.
         tools.log("notice", appointment.id + " Appointment has changed.");
         calendarItem("update", appointment, GOOGLE_CONFIG);
