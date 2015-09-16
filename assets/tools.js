@@ -32,7 +32,7 @@ module.exports = {
     if (error) {
       var logtext = logtext + " " + JSON.stringify(error);
     }
-    var LOG_HISTORY += logtext;
+    LOG_HISTORY += logtext + "\n";
     console.log(logtext);
     if (status == "critical") {
       module.exports.crashReport(LOG_HISTORY);
@@ -64,7 +64,7 @@ module.exports = {
     return;
   },
   crashReport: function(loghistory) {
-    var loghistory += "Magister Calendar has crashed!\nPlease open a new issue at https://git.io/magister with this logfile.\n\n";
+    loghistory += "Magister Calendar has crashed!\nPlease open a new issue at https://git.io/magister with this logfile.\n\n";
     fs.writeFile("crash_" + new Date().getTime() + ".log", loghistory, function(err) {
       if (err) {
         module.exports.log("error", "Could not save crash file to disk.", err);
