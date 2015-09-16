@@ -1,5 +1,5 @@
 /**
- * Magister Calendar v1.4.0
+ * Magister Calendar v1.4.1
  * https://git.io/magister
  *
  * Copyright 2015 Sander Laarhoven
@@ -19,7 +19,7 @@ var util = require("util");
 var tools = require("./assets/tools.js");
 
 /* Set our settings. */
-var VERSION = "1.4.0";
+var VERSION = "1.4.1";
 var DEBUG = false;
 var CONFIG_PATH = "config.json";
 var CLIENT_PATH = "client_secret.json";
@@ -29,7 +29,7 @@ var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
 var CACHE_PATH = "cache/";
 
 /* Say hello to our creator. */
-console.log("Magister Calendar v" + VERSION + " started.\nSystem Time: " + new Date().toLocaleTimeString());
+tools.log("info", "Magister Calendar v" + VERSION + " started.\nSystem Time: " + new Date().toLocaleTimeString());
 
 /* Make sure we have our cache folder. */
 fs.mkdir(CACHE_PATH, function(err) {
@@ -149,14 +149,22 @@ else {
     PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + 5);
   }
   else if (today.time >= CONFIG.day_is_over_time) {
+    // Today is either monday, tuesday, wednesday or thursday past day_is_over_time.
     // Fetch from tomorrow, this day is over.
     PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 1);
     PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + ( 5 - new Date(PERIOD.start).getDay() ) );
   }
-  else {
+  else if (today.time <= CONFIG.day_is_over_time && today.day <= 5 && today.day >= 1) {
+    // Today is either monday, tuesday, wednesday, thursday or friday before day_is_over_time.
     // Fetch including tomorrow, this day is not over yet.
     PERIOD.start = PERIOD.start.setDate(today.date.getDate() + 0);
     PERIOD.end = PERIOD.end.setDate(new Date(PERIOD.start).getDate() + ( 5 - new Date(PERIOD.start).getDay() ) );
+  }
+  else {
+    // It's not saturday, sunday, friday past time, past time (at any day), before time (at any day).
+    // What kind of sorcery is this?
+    tools.log("critical", "Could not determine period, this should never happen. Please open an issue at GitHub, with all log files.");
+    process.exit(1);
   }
 }
 
@@ -192,7 +200,7 @@ function requestNewToken(config, callback) {
   // Perform the request.
   request.post("https://accounts.google.com/o/oauth2/token", {form: form}, function(err, response, body) {
     if (err) {
-      tools.log("error", "Problem requesting new OAuth2 token.", err);
+      tools.log("critical", "Problem requesting new OAuth2 token.", err);
       process.exit(1);
     }
     result = JSON.parse(body);
@@ -239,7 +247,7 @@ function fetchAppointments(err, magisterlogin) {
   }
   magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
     if (err) {
-      tools.log("error", "Problem fetching appointments. ", err);
+      tools.log("critical", "Problem fetching appointments. ", err);
       process.exit(1);
     }
     // We got the appointments, now let's get the current course info.
@@ -251,7 +259,7 @@ function fetchAppointments(err, magisterlogin) {
 function fetchCurrentCourse(magisterlogin, appointments, callback) {
   magisterlogin.currentCourse(function(err, currentcourse) {
     if (err) {
-      tools.log("error", "Problem fetching current course. ", err);
+      tools.log("critical", "Problem fetching current course. ", err);
       process.exit(1);
     }
     // Callback to parseAppointments.
@@ -412,14 +420,14 @@ function parseAppointments(appointments, currentcourse) {
       var cache = JSON.parse(cache);
 
       // Check if the homework is still the same.
-      if (cache.homework != appointment.homework) {
+      if (cache.homework !== appointment.homework) {
         // We'd certainly want to catch the teacher doing this..
         tools.log("notice", appointment.id + " Homework has changed.");
         tools.sendPushMessage(appointment);
       }
 
       // Check if the cached appointment is the same as the current one.
-      if (JSON.stringify(cache) != JSON.stringify(appointment)) {
+      if (JSON.stringify(cache) !== JSON.stringify(appointment)) {
         // The cached appointment differs from the live one.
         tools.log("notice", appointment.id + " Appointment has changed.");
         calendarItem("update", appointment, GOOGLE_CONFIG);
@@ -522,6 +530,7 @@ function calendarItem(action, appointment, googleconfig) {
     // Check for request error.
     if (err) {
       return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", err);
+      fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_request_error.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
     }
 
     // Check for response error.

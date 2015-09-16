@@ -1,5 +1,5 @@
 /**
- * Magister Calendar v1.4.0
+ * Magister Calendar v1.4.1
  * https://git.io/magister
  *
  * Copyright 2015 Sander Laarhoven
@@ -7,6 +7,7 @@
  */
 
 var fs = require("fs");
+var LOG_HISTORY = "";
 
 module.exports = {
   validjson: function (string) {
@@ -19,7 +20,7 @@ module.exports = {
     return true;
   },
   log: function(status, text, error) {
-    if (status == "error") {
+    if (status == "error" || status == "critical") {
       var prefix = "!";
     }
     else {
@@ -31,7 +32,11 @@ module.exports = {
     if (error) {
       var logtext = logtext + " " + JSON.stringify(error);
     }
+    LOG_HISTORY += logtext + "\n";
     console.log(logtext);
+    if (status == "critical") {
+      module.exports.crashReport(LOG_HISTORY);
+    }
   },
   loadJSONfile: function(path) {
     var file;
@@ -57,5 +62,16 @@ module.exports = {
   sendPushMessage: function(appointment) {
     // To be implemented..
     return;
+  },
+  crashReport: function(loghistory) {
+    loghistory += "Magister Calendar has crashed!\nPlease open a new issue at https://git.io/magister with this logfile.\n\n";
+    fs.writeFile("crash_" + new Date().getTime() + ".log", loghistory, function(err) {
+      if (err) {
+        module.exports.log("error", "Could not save crash file to disk.", err);
+      }
+      else {
+        module.exports.log("notice", "Saved crash report to disk.");
+      }
+    });
   }
 }
