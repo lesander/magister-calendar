@@ -29,7 +29,7 @@ var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
 var CACHE_PATH = "cache/";
 
 /* Say hello to our creator. */
-console.log("Magister Calendar v" + VERSION + " started.\nSystem Time: " + new Date().toLocaleTimeString());
+tools.log("info", "Magister Calendar v" + VERSION + " started.\nSystem Time: " + new Date().toLocaleTimeString());
 
 /* Make sure we have our cache folder. */
 fs.mkdir(CACHE_PATH, function(err) {
