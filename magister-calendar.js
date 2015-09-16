@@ -334,7 +334,7 @@ function parseAppointments(appointments, currentcourse) {
 
     // Build the appointment object.
     var appointment = {
-      "version": "1.0.0",
+      "version": "2.0.0",
       "id": appointments[i].id(),
       "location": appointments[i].location(),
       "description": appointments[i].description(),
@@ -344,7 +344,7 @@ function parseAppointments(appointments, currentcourse) {
       "class": appointments[i].classes()[0],
       "status": appointments[i].status(),
       "type": appointments[i].type(),
-      "homework": "",
+      "homework": appointments[i].content(),
       "formatted": {}
     };
 
@@ -359,9 +359,6 @@ function parseAppointments(appointments, currentcourse) {
       tools.log("notice", appointment.id + " Appointment has invalid ID, changing to '" + newid + "'.");
       appointment.id = newid;
     }
-
-    // Add content (homework) to the appointment if there is any.
-    appointment.homework = appointments[i].content();
 
     /* The following block of code is written for a specific school using Magister,
        because their appointments always have wrong end times. */
