@@ -13,7 +13,7 @@
   "license": "MIT",
   "analyze": true,
   "dependencies": {
-    "magister.js": "1.8.x",
+    "magister.js": "1.10.x",
     "util": "0.10.x",
     "googleapis": "2.1.x",
     "google-auth-library": "0.9.x"
