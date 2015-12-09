@@ -119,6 +119,8 @@ Once you've got the cronjob up and running (or ran `magister-calendar.js` succes
 
 If you'd like to contribute to Magister Calendar or file a bug or feature request, please head over to [the issue tracker](https://github.com/lesander/magister-calendar/issues) or [open a pull request](https://github.com/lesander/magister-calendar/compare/).
 
+:warning: __Please note__ that before opening a new issue, make sure that you're using the __latest version__ of [MagisterJS](https://github.com/simplyGits/MagisterJS), since a lot of problems with logging in to Magister have to do with outdated versions of that package. To update, run `npm install magister.js --save` inside the folder where you have Magister Calendar installed.
+
 ## License & Disclaimer
 This software is open-sourced under the MIT Licence (see [LICENSE](LICENSE) for the full license). So within some limits, you can do with the code whatever you want. However, if you like and/or want to re-use it, I'd really appreciate a reference to this project page.
 
