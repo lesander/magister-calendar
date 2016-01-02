@@ -18,6 +18,8 @@
 - A Google account
 - Basic programming knowledge and common sense
 
+Although this project wasn't built for it, Magister Calendar can also run on Android (using [JXcore](http://jxcore.com)) and Windows. 
+
 ## Installing
 Make sure that all requirements are present on your system.
 
@@ -44,7 +46,7 @@ Now we're going to install all the dependencies of Magister Calendar. Do so by r
 
 ### 3. Authorize Magister Calendar
 
-Awesome, you're almost ready to start using Magister Calendar. The last thing we need to do before we start the cronjob, is authorize the application with Google. You can do this easily by firing up a terminal and cd'ing to the project folder and running `nodejs firstrun.js`. Make sure you've got the JSON file you downloaded earlier in the same directory and have renamed it to `client_secret.json`.
+Awesome, you're almost ready to start using Magister Calendar. The last thing we need to do before we start the cronjob, is authorize the application with Google. You can do this easily by firing up a terminal and cd'ing to the project folder and running `nodejs firstrun.js`. Make sure you've got the JSON file you downloaded earlier in the same directory and have renamed it to `client_secret.json`. When running JXcore on Android (instead of NodeJS), make sure to manually set the `HOME` environment variable (eg: `HOME=/my/home/path jx firstrun.js`).
 
 The script will produce an authorization URL you will need to visit in your browser. Click the link and then proceed to login with your Google account. After authorizing your application, you will be redirected to the redirect URL you provided earlier, with an access token attatched to it. Copy that access token and paste it in the terminal running the firstrun.js script. When it's done obtaining the access and refresh token, you're all set with all the Google authentication stuff.
 
@@ -109,6 +111,8 @@ Open your favourite cronjob manager and add the command `nodejs /path/to/magiste
 
 In this example, we'll be using `crontab`, one of the most common cronjob managers. To start editing your cron file, run `crontab -e`. Add the following line at the end of the file to execute Magister Calendar every minute:
 `*/1 * * * * cd /path/to/magister-calendar; nodejs magister-calendar.js > cron.log`. For more on the crontab syntax, [see this article](http://www.adminschoice.com/crontab-quick-reference) or run `man crontab` in a terminal.
+
+:warning: Note that when using JXcore on Android, you'll have to manually set your `HOME` path before running Magister Calendar. You can either permanently set this in your `PATH`, or define it every time before running Magister Calendar: `HOME=/my/home/directory jx magister-calendar.js`.
 
 ## Using Magister Calendar
 Once you've got the cronjob up and running (or ran `magister-calendar.js` successfully at least once), you can check your filled in calendar at [Google Calendar](https://google.com/calendar) or on your favourite calendar application synced with Google Calendar.
