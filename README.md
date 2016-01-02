@@ -112,7 +112,7 @@ Open your favourite cronjob manager and add the command `nodejs /path/to/magiste
 In this example, we'll be using `crontab`, one of the most common cronjob managers. To start editing your cron file, run `crontab -e`. Add the following line at the end of the file to execute Magister Calendar every minute:
 `*/1 * * * * cd /path/to/magister-calendar; nodejs magister-calendar.js > cron.log`. For more on the crontab syntax, [see this article](http://www.adminschoice.com/crontab-quick-reference) or run `man crontab` in a terminal.
 
-:warning: Note that when using JXcore on Android, you'll have to manually set your `HOME` path before running Magister Calendar. You can either permanently set this in your `PATH`, or define it every time before running Magister Calendar: `HOME=/my/home/directory jx magister-calendar.js`.
+:warning: Note that when using JXcore on Android, you'll have to manually set your `HOME` path before running Magister Calendar. You can either permanently set this in your `~/.profile`, or define it every time before running Magister Calendar: `HOME=/my/home/directory jx magister-calendar.js`.
 
 ## Using Magister Calendar
 Once you've got the cronjob up and running (or ran `magister-calendar.js` successfully at least once), you can check your filled in calendar at [Google Calendar](https://google.com/calendar) or on your favourite calendar application synced with Google Calendar.
