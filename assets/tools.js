@@ -78,11 +78,11 @@ module.exports = {
     if (type == "homework") {
       var title = "Homework changed";
       var message = "Homework for "+appointment.formatted.title+" on "+appointmentDate+" ";
-          message += "was changed.\n Before:\n"+oldvalue+"\nAfter:\n"+appointment.homework;
+          message += "was changed.\nBefore:\n"+oldvalue+"\nAfter:\n"+appointment.homework;
     } else if (type == "location") {
       var title = "Location changed";
       var message = "Location for "+appointment.formatted.title+" on "+appointmentDate+" ";
-          message += "was changed.\n Old location: "+oldvalue+"\nCurrent: "+appointment.location;
+          message += "was changed.\nOld location: "+oldvalue+"\nNew location: "+appointment.location;
     } else if (type == "cancelled") {
       var title = "Appointment cancelled";
       var message = "Appointment "+appointment.formatted.title+" on "+appointmentDate+" ";
@@ -112,13 +112,13 @@ module.exports = {
       method: "POST",
       form: form
     }, function(err, response, body) {
-      if (err) tools.log("error", "Failed to send push message.", err);
+      if (err) module.exports.log("error", "Failed to send push message.", err);
       // json encode?
       console.log(body);
       if (body.errors) {
-        tools.log("error", "Push message was not sent: ", body.errors);
+        module.exports.log("error", "Push message was not sent: ", body.errors);
       } else {
-        tools.log("info", "Push message was sent with id "+body.request);
+        module.exports.log("info", "Push message was sent with id "+body.request);
       }
     });
     return;
