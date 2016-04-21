@@ -117,12 +117,11 @@ module.exports = {
       form: form
     }, function(err, response, body) {
       if (err) module.exports.log("error", "Failed to send push message.", err);
-      // json encode?
-      console.log(body);
-      if (body.errors) {
-        module.exports.log("error", "Push message was not sent: ", body.errors);
+      var response = JSON.parse(body);
+      if (response.errors) {
+        module.exports.log("error", "Push message was not sent: ", response.errors);
       } else {
-        module.exports.log("info", "Push message was sent with id "+body.request);
+        module.exports.log("info", "Push message was sent with id "+response.request);
       }
     });
     return;
