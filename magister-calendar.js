@@ -19,7 +19,7 @@ var util = require("util");
 var tools = require("./assets/tools.js");
 
 /* Set our settings. */
-var VERSION = "1.5.1";
+var VERSION = "1.5.2";
 var DEBUG = false;
 var CONFIG_PATH = "config.json";
 var CLIENT_PATH = "client_secret.json";
