@@ -7,6 +7,7 @@
  */
 
 var fs = require("fs");
+var request = require("request");
 var LOG_HISTORY = "";
 
 module.exports = {
