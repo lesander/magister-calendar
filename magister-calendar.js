@@ -422,6 +422,12 @@ function parseAppointments(appointments, currentcourse) {
         tools.sendPushMessage(CONFIG.pushover, "location", appointment, cache.location);
       }
 
+      // Oh oh. Bad news?
+      if (cache.status == 5 && appointment.status != 5) {
+        tools.log("notice", appointment.id + " Status has changed.");
+        tools.sendPushMessage(CONFIG.pushover, "status", appointment, cache.status);
+      }
+
       // Check if the cached appointment is the same as the current one.
       if (JSON.stringify(cache) !== JSON.stringify(appointment)) {
         // The cached appointment differs from the live one.

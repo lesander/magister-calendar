@@ -87,6 +87,10 @@ module.exports = {
       var title = "Appointment cancelled";
       var message = "Appointment "+appointment.formatted.title+" on "+appointmentDate+" ";
           message += "has been cancelled.";
+    } else if (type == "status") {
+      var title = "Appointment no longer cancelled";
+      var message = "Appointment "+appointment.formatted.title+" on "+appointmentDate+" ";
+          message += "was cancelled, but is now back on the calendar.";
     } else {
       module.exports.log("notice", "Unknown type parameter for function sendPushMessage");
       return false;
