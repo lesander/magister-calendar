@@ -59,8 +59,67 @@ module.exports = {
     }
     return JSON.parse(file);
   },
-  sendPushMessage: function(appointment) {
-    // To be implemented..
+  sendPushMessage: function(config, type, appointment, oldvalue) {
+
+    // Check if push messages are enabled.
+    if (config.enabled !== true) {
+      return false;
+    }
+
+    // Check config.
+    if (config.token.length !== 30 || config.user.length !== 30) {
+      module.exports.log("notice", "sendPushMessage is not configured properly.");
+      return false;
+    }
+
+    // Determine message type.
+    var appointmentDate = new Date(appointment.begin).toDateString();
+    if (type == "homework") {
+      var title = "Homework changed";
+      var message = "Homework for "+appointment.formatted.title+" on "+appointmentDate+" ";
+          message += "was changed.\n Before:\n"+oldvalue+"\nAfter:\n"+appointment.homework;
+    } else if (type == "location") {
+      var title = "Location changed";
+      var message = "Location for "+appointment.formatted.title+" on "+appointmentDate+" ";
+          message += "was changed.\n Old location: "+oldvalue+"\nCurrent: "+appointment.location;
+    } else if (type == "cancelled") {
+      var title = "Appointment cancelled";
+      var message = "Appointment "+appointment.formatted.title+" on "+appointmentDate+" ";
+          message += "has been cancelled.";
+    } else {
+      module.exports.log("notice", "Unknown type parameter for function sendPushMessage");
+      return false;
+    }
+    message += "\nDocent(e): "+appointment.teacher+"\nId: "+appointment.id;
+
+    // Prepare POST data.
+    var form = {
+      token: config.token,
+      user: config.user,
+      title: title,
+      message: message
+    };
+
+    // Check device(s) to send message to.
+    if (config.device !== "") {
+      form.device = config.device;
+    }
+
+    // Execute request.
+    request({
+      url: "https://api.pushover.net/1/messages.json",
+      method: "POST",
+      form: form
+    }, function(err, response, body) {
+      if (err) tools.log("error", "Failed to send push message.", err);
+      // json encode?
+      console.log(body);
+      if (body.errors) {
+        tools.log("error", "Push message was not sent: ", body.errors);
+      } else {
+        tools.log("info", "Push message was sent with id "+body.request);
+      }
+    });
     return;
   },
   crashReport: function(loghistory) {

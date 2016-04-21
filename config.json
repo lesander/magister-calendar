@@ -5,6 +5,12 @@
   "magister_url": "",
   "magister_username": "",
   "magister_password": "",
+  "pushover": {
+    "enabled": false,
+    "token": "",
+    "user": "",
+    "device": ""
+  },
   "remove_cancelled_classes": true,
   "blacklist": ["", "KWT"],
   "reminders": [
