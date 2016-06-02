@@ -413,7 +413,19 @@ function parseAppointments(appointments, currentcourse) {
       if (cache.homework !== appointment.homework) {
         // We'd certainly want to catch the teacher doing this..
         tools.log("notice", appointment.id + " Homework has changed.");
-        tools.sendPushMessage(appointment);
+        tools.sendPushMessage(CONFIG.pushover, "homework", appointment, cache.homework);
+      }
+
+      // Check if the location is still the same.
+      if (cache.location !== appointment.location) {
+        tools.log("notice", appointment.id + " Location has changed.");
+        tools.sendPushMessage(CONFIG.pushover, "location", appointment, cache.location);
+      }
+
+      // Oh oh. Bad news?
+      if (cache.status == 5 && appointment.status != 5) {
+        tools.log("notice", appointment.id + " Status has changed.");
+        tools.sendPushMessage(CONFIG.pushover, "status", appointment, cache.status);
       }
 
       // Check if the cached appointment is the same as the current one.
@@ -491,7 +503,7 @@ function calendarItem(action, appointment, googleconfig) {
       form.summary = "[UITVAL] " + form.summary;
     }
     form.colorId = 4; // Red color scheme.
-    tools.sendPushMessage(appointment);
+    tools.sendPushMessage(CONFIG.pushover, "cancelled", appointment, false);
   }
 
   // Determine the request method.
