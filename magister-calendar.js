@@ -204,6 +204,11 @@ function requestNewToken(config, callback) {
       process.exit(1);
     }
     result = JSON.parse(body);
+    // Check for errors.
+    if (result.error) {
+      tools.log("critical", "Problem requesting new OAuth2 token: "+result.error.errors[0].message, result.error);
+      process.exit(1);
+    }
     // Update the Google Config.
     GOOGLE_CONFIG.access_token = result.access_token;
     GOOGLE_CONFIG.token_type = result.token_type;
