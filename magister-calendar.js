@@ -459,7 +459,7 @@ function parseAppointments(appointments, currentcourse) {
  * ===================================== */
 
 /* Send a calendar item to Google. */
-function calendarItem(action, appointment, googleconfig) {
+function calendarItem(action, appointment, googleconfig, retry) {
   // Construct the form object as per v3 of the Calendar API.
   var form = {
     "client_id": googleconfig.client_id,
@@ -545,10 +545,35 @@ function calendarItem(action, appointment, googleconfig) {
       tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", body.error);
 
       // Check for duplicate.
-      if (body.error.code == "409") {
+      if (body.error.code == 409) {
         tools.log("notice", appointment.id + " Appointment is a duplicate, updating instead.");
         calendarItem("update", appointment, googleconfig);
       }
+
+      // Check if we should use exponential backoff.
+      if (
+          (body.error.code == 403 && body.error.errors[0].reason == "rateLimitExceeded") ||
+          (body.error.code == 503 && body.error.errors[0].reason == "backendError")
+         ) {
+
+        // Make sure retry is set.
+        if (typeof retry == "undefined") {
+          var retry = 0;
+        }
+
+        // Only retry 10 times.
+        if (retry/2 >= 10) {
+          tools.log("notice", appointment.id + " Failed to add appointment after trying 10 times.");
+          return false;
+        }
+
+        // Retry updating/creating appointment.
+        tools.log("notice", appointment.id + " Failed to add appointment after trying "+retry/2+" times, retrying in 2 seconds.");
+        setTimeout(function() {
+          calendarItem(action, appointment, googleconfig, retry+2);
+        }, retry*1000);
+      }
+
       return;
     }
 
