@@ -63,7 +63,7 @@ module.exports = {
   sendPushMessage: function(config, type, appointment, oldvalue) {
 
     // Check if push messages are enabled.
-    if (config.enabled !== true) {
+    if (typeof config == "undefined" || !config || config.enabled !== true) {
       return false;
     }
 
