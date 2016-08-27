@@ -82,6 +82,18 @@ These three settings are basically the only required settings before you can use
 ---
 
 ```json
+"pushover": {
+  "enabled": false,
+  "token": "",
+  "user": "",
+  "device" : ""
+}
+```
+Change these settings to send push notifications to i.e. your mobile device with [Pushover](https://pushover.net/). Create your account with Pushover to get started. If you want to use Pushover with Magister Calendar, you will have to enable it by changing `false` to `true`. In order to get your token, [create an application](https://pushover.net/apps/build). The API token that shows up has to go in the `token` field. Your user key will be available on the home screen of Pushover. Of course you want to receive your push notifications somewhere. [Install one of the Pushover applications](https://pushover.net/clients) and create a device name. The exact device name should match the `device` field in order to work.
+
+---
+
+```json
 { "remove_cancelled_classes": true }
 ```
 Can be either `true` or `false`. When set to true, Magister Calendar will cancel all appointments on your calendar which have been cancelled in Magister. When set to `false`, only the title of the appointment will be changed.
