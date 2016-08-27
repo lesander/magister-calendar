@@ -350,6 +350,7 @@ function parseAppointments(appointments, currentcourse) {
       "status": appointments[i].status(),
       "type": appointments[i].type(),
       "homework": appointments[i].content(),
+      "prefix": "[" + appointments[i].beginBySchoolHour() + "]",
       "formatted": {}
     };
 
@@ -392,9 +393,14 @@ function parseAppointments(appointments, currentcourse) {
     }
     /* End of special code block. */
 
+    // Some appointments don't have a schoolhour assigned. This removes the prefix instead of schowing '[null]'
+    if(appointment.schoolhour == null){
+      appointment.prefix = "";
+    }
+
     // Format the agenda item.
     appointment.formatted = {
-      "title": "["+appointment.schoolhour+"] "+appointment.description,
+      "title": appointment.prefix+" "+appointment.description,
       "location": "Lokaal "+appointment.location,
       "description": "Docent(e): "+appointment.teacher+"\nHuiswerk: "+appointment.homework+"\nId: "+appointment.id
     };
