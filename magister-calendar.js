@@ -350,6 +350,7 @@ function parseAppointments(appointments, currentcourse) {
       "status": appointments[i].status(),
       "type": appointments[i].type(),
       "homework": appointments[i].content(),
+      "prefix": appointments[i].beginBySchoolHour(),
       "formatted": {}
     };
 
@@ -392,9 +393,14 @@ function parseAppointments(appointments, currentcourse) {
     }
     /* End of special code block. */
 
+    // Personal appointments don't have a schoolhour assigned. This makes sure it will show a 'P' (for personal) instead of 'null'
+    if(appointment.schoolhour == null){
+      appointment.prefix = "P";
+    }
+
     // Format the agenda item.
     appointment.formatted = {
-      "title": "["+appointment.schoolhour+"] "+appointment.description,
+      "title": "["+appointment.prefix+"] "+appointment.description,
       "location": "Lokaal "+appointment.location,
       "description": "Docent(e): "+appointment.teacher+"\nHuiswerk: "+appointment.homework+"\nId: "+appointment.id
     };
