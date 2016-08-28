@@ -136,5 +136,41 @@ module.exports = {
         module.exports.log("notice", "Saved crash report to disk.");
       }
     });
+  },
+  formatAppointmentTitle: function(titleConfig, appointment, check) {
+    // Set empty variables.
+    var amountOfParsedVars = 0;
+    var parts = [];
+
+    // Count amount of variable expressions in the title config.
+    var amountOfVars = (titleConfig.match(/%/g) || []).length / 2;
+
+    // Make sure there is an even amount of variable identifiers.
+    if (amountOfVars % 2 == 1) {
+      module.exports.log("critical", "Invalid title_format value in configuration: odd amount of variable identifiers.");
+      return false;
+    }
+
+    // Find variables.
+    titleConfig.replace(/%(.*?)%/g, function(g0, g1) {
+      parts.push(g1);
+    });
+
+    // Replace variables with their values.
+    var formattedTitle = titleConfig;
+    for (var i in parts) {
+      try {
+        formattedTitle = formattedTitle.replace("%"+parts[i]+"%", appointment[parts[i]]);
+      } catch(e) {
+        module.exports.log("critical", "Invalid title_format value in configuration: could not append appointment."+parts[i]+".", e);
+        return false;
+      }
+    }
+
+    if (check) {
+      return true;
+    } else {
+      return formattedTitle;
+    }
   }
 }

@@ -1,0 +1,25 @@
+{
+  "config-version": 2,
+  "magister": {
+    "url": "",
+    "username": "",
+    "password": ""
+  },
+  "pushover": {
+    "enabled": false,
+    "token": "",
+    "user": "",
+    "device": ""
+  },
+  "agenda": {
+    "calendar": "primary",
+    "period": "default",
+    "day_is_over_time": 16,
+    "remove_cancelled_classes": true,
+    "title_format": "[%hour%] %description%",
+    "blacklist": [ "", "KWT" ],
+    "reminders": [
+      { "method": "popup", "minutes": "5" }
+    ]
+  }
+}
