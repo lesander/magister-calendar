@@ -350,7 +350,7 @@ function parseAppointments(appointments, currentcourse) {
       "status": appointments[i].status(),
       "type": appointments[i].type(),
       "homework": appointments[i].content(),
-      "prefix": "[" + appointments[i].beginBySchoolHour() + "]",
+      "prefix": "[" + appointments[i].beginBySchoolHour() + "] ",
       "formatted": {}
     };
 
@@ -400,7 +400,7 @@ function parseAppointments(appointments, currentcourse) {
 
     // Format the agenda item.
     appointment.formatted = {
-      "title": appointment.prefix+" "+appointment.description,
+      "title": appointment.prefix+appointment.description,
       "location": "Lokaal "+appointment.location,
       "description": "Docent(e): "+appointment.teacher+"\nHuiswerk: "+appointment.homework+"\nId: "+appointment.id
     };
