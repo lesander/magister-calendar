@@ -29,7 +29,7 @@ var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
 var CACHE_PATH = "cache/";
 
 /* Say hello to our creator. */
-tools.log("info", "Magister Calendar v" + VERSION + " started.\nSystem Time: " + new Date().toLocaleTimeString());
+tools.log("info", "Magister Calendar v" + VERSION + " started.\n[*] System Time: " + new Date().toLocaleTimeString() + ", date: " + new Date().toUTCString());
 
 /* Make sure we have our cache folder. */
 fs.mkdir(CACHE_PATH, function(err) {
@@ -72,6 +72,16 @@ var GOOGLE_CONFIG = {
 /* ====================
  * Check configuration.
  * ==================== */
+
+/* Enable debugging by config if it's defined. */
+if (typeof(CONFIG.debug == "boolean") && CONFIG.debug == true) {
+  var DEBUG = CONFIG.debug;
+}
+if (DEBUG == true) {
+  tools.log("info", "Debugging has been enabled. Extra information will be printed, and logs/dumps saved to disk.");
+} else {
+  tools.log("info", "Debugging has been disabled.");
+}
 
 /* Check magister values. */
 if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magister_password == "" ||
@@ -434,7 +444,7 @@ function parseAppointments(appointments, currentcourse) {
       }
 
       // Oh oh. Bad news?
-      if (cache.status == 5 && appointment.status != 5) {
+      if ( (cache.status == 5 && appointment.status != 5) || (cache.status == 4 && appointment.status != 4) ) {
         tools.log("notice", appointment.id + " Status has changed.");
         tools.sendPushMessage(CONFIG.pushover, "status", appointment, cache.status);
       }
@@ -503,7 +513,7 @@ function calendarItem(action, appointment, googleconfig, retry) {
   }
 
   // Cancel the appointment & send a message if the status is cancelled (5).
-  if (appointment.status == 5) {
+  if (appointment.status == 5 || appointment.status == 4) {
     tools.log("notice", appointment.id + " Appointment has been cancelled, updating status.");
     // Cancel appointment if config allows it.
     if (CONFIG.remove_cancelled_classes) {
