@@ -1,4 +1,5 @@
 {
+  "debug": false,
   "calendar": "primary",
   "period": "default",
   "day_is_over_time": 16,
@@ -14,9 +15,6 @@
   "remove_cancelled_classes": true,
   "blacklist": ["", "KWT"],
   "reminders": [
-    {
-      "method": "popup",
-      "minutes": "5"
-    }
+    { "method": "popup", "minutes": "5" }
   ]
 }
