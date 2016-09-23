@@ -74,7 +74,7 @@ var GOOGLE_CONFIG = {
  * ==================== */
 
 /* Enable debugging by config if it's defined. */
-if (typeof(CONFIG.debug == "boolean") && CONFIG.debug == true) {
+if (typeof CONFIG.debug == "boolean") {
   var DEBUG = CONFIG.debug;
 }
 if (DEBUG == true) {
