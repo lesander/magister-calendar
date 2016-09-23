@@ -444,7 +444,7 @@ function parseAppointments(appointments, currentcourse) {
       }
 
       // Oh oh. Bad news?
-      if ( (cache.status == 5 && appointment.status != 5) || (cache.status == 4 && appointment.status != 4) ) {
+      if (cache.status != appointment.status) {
         tools.log("notice", appointment.id + " Status has changed.");
         tools.sendPushMessage(CONFIG.pushover, "status", appointment, cache.status);
       }
