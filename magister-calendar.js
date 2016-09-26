@@ -1,5 +1,5 @@
 /**
- * Magister Calendar v1.8.1
+ * Magister Calendar v1.8.2
  * https://git.io/magister
  *
  * Copyright 2015 Sander Laarhoven
@@ -19,7 +19,7 @@ var util = require("util");
 var tools = require("./assets/tools.js");
 
 /* Set our settings. */
-var VERSION = "1.8.1";
+var VERSION = "1.8.2";
 var DEBUG = false;
 var CONFIG_PATH = "config.json";
 var CLIENT_PATH = "client_secret.json";
@@ -74,7 +74,7 @@ var GOOGLE_CONFIG = {
  * ==================== */
 
 /* Enable debugging by config if it's defined. */
-if (typeof(CONFIG.debug == "boolean") && CONFIG.debug == true) {
+if (typeof CONFIG.debug == "boolean") {
   var DEBUG = CONFIG.debug;
 }
 if (DEBUG == true) {
@@ -444,7 +444,7 @@ function parseAppointments(appointments, currentcourse) {
       }
 
       // Oh oh. Bad news?
-      if ( (cache.status == 5 && appointment.status != 5) || (cache.status == 4 && appointment.status != 4) ) {
+      if (cache.status != appointment.status) {
         tools.log("notice", appointment.id + " Status has changed.");
         tools.sendPushMessage(CONFIG.pushover, "status", appointment, cache.status);
       }
