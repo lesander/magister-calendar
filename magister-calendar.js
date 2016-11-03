@@ -358,6 +358,7 @@ function parseAppointments(appointments, currentcourse) {
       "schoolhour": appointments[i].beginBySchoolHour(),
       "class": appointments[i].classes()[0],
       "status": appointments[i].status(),
+      "scrapped": appointments[i].scrapped(),
       "type": appointments[i].type(),
       "homework": appointments[i].content(),
       "prefix": "[" + appointments[i].beginBySchoolHour() + "] ",
@@ -444,7 +445,8 @@ function parseAppointments(appointments, currentcourse) {
       }
 
       // Oh oh. Bad news?
-      if (cache.status != appointment.status) {
+      // TODO: use getter: appointment.scrapped != cache.scrapped
+      if ( (cache.status == 5 && appointment.status != 5) || (cache.status == 4 && appointment.status != 4) ) {
         tools.log("notice", appointment.id + " Status has changed.");
         tools.sendPushMessage(CONFIG.pushover, "status", appointment, cache.status);
       }
