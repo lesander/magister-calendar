@@ -109,6 +109,12 @@ if (typeof(CONFIG.remove_cancelled_classes) != "boolean") {
   process.exit(1);
 }
 
+/* Check if location_means_cancelled has a valid value */
+if (typeof(CONFIG.location_means_cancelled != "object")) {
+  tools.log("error", "CONFIG PARSE ERROR: 'location_means_cancelled' has invalid value.");
+  process.exit(1);
+}
+
 /* Check if blacklist has a valid value. */
 if (typeof(CONFIG.blacklist) != "object") {
   tools.log("error", "CONFIG PARSE ERROR: 'blacklist' has invalid value.");
@@ -440,8 +446,21 @@ function parseAppointments(appointments, currentcourse) {
 
       // Check if the location is still the same.
       if (cache.location !== appointment.location) {
-        tools.log("notice", appointment.id + " Location has changed.");
-        tools.sendPushMessage(CONFIG.pushover, "location", appointment, cache.location);
+
+        /* Loop through the locations that mean cancelled. */
+        for (var a = 0; a < CONFIG.location_means_cancelled.length; a++) {
+          // If the location means that the appointment was cancelled we cancel it.
+          if (appointment.location == CONFIG.location_means_cancelled[a]) {
+            tools.log("notice", appointment.id + " Location has changed. Appointment was cancelled.");
+            // Don't send a push notification. This will be done when canceling. (line: 556:5)
+            var done = true;
+          }
+        }
+        // If the appointment has not been caught by the loop above we notify the changed location.
+        if(!done) {
+          tools.log("notice", appointment.id + " Location has changed.");
+          tools.sendPushMessage(CONFIG.pushover, "location", appointment, cache.location);
+        }
       }
 
       // Oh oh. Bad news?
@@ -514,8 +533,16 @@ function calendarItem(action, appointment, googleconfig, retry) {
     form.end.dateTime = new Date(endtime).toISOString();
   }
 
+
+  for(c = 0; c < CONFIG.location_means_cancelled.length; c++) {
+    // If the location means the appointment was cancelled.
+    if (appointment.location == CONFIG.location_means_cancelled[c]) {
+      var location_means_cancelled = true;
+    }
+  }
+
   // Cancel the appointment & send a message if the status is cancelled (5).
-  if (appointment.status == 5 || appointment.status == 4) {
+  if (appointment.status == 5 || appointment.status == 4 || location_means_cancelled === true) {
     tools.log("notice", appointment.id + " Appointment has been cancelled, updating status.");
     // Cancel appointment if config allows it.
     if (CONFIG.remove_cancelled_classes) {

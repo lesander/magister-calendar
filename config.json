@@ -13,6 +13,7 @@
     "device": ""
   },
   "remove_cancelled_classes": true,
+  "location_means_cancelled": [""],
   "blacklist": ["", "KWT"],
   "reminders": [
     { "method": "popup", "minutes": "5" }
