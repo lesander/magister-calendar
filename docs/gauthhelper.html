@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Google Auth Helper</title>
+    <style>
+      input#code {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Google Auth Helper</h1>
+    <p>
+      Copy the code below and paste it in your console.
+    </p>
+    <input id="code" type="text" value="">
+    <script>
+
+      // Set the given callback code as value in the input.
+      let code = window.location.search.replace('?code=', '')
+      const el = document.querySelectorAll('#code')[0]
+      el.value = code
+
+      // Select the whole value on click in the element.
+      el.addEventListener('click', (event) => {
+        event.target.select()
+      })
+
+    </script>
+  </body>
+</html>
