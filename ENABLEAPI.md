@@ -14,13 +14,13 @@ When clicking Agree and Continue, Google will create your new project called My 
 
 ## 3. Configure consent screen
 The website will say that you first need to add a Product name before you can continue.
-Go ahead and configure your Consent screen. You have to set `Magister Calendar` as the product name, 
-all the other options are mandatory. When that's done, hit the save button and wait for the site to get back to the Create Client ID screen. 
+Go ahead and configure your Consent screen. You have to set `Magister Calendar` as the product name,
+all the other options are mandatory. When that's done, hit the save button and wait for the site to get back to the Create Client ID screen.
 
 ![Create Client ID](http://img.prntscr.com/img?url=http://i.imgur.com/FUXOdfg.png)
 
 ## 4. Create Client ID
-Select the `Web application` option and fill in `Magister Calendar` as the name (This has to be the exact same as the product name of the consent screen). The last thing you'll have to fill in is the Authorized redirect URI. You can set this to a phony URL, for example `http://localhost/authcallback`, or to `https://lesander.me/gauthhelper.html` to be able to read the auth key easily (more on that later in the readme).
+Select the `Web application` option and fill in `Magister Calendar` as the name (This has to be the exact same as the product name of the consent screen). The last thing you'll have to fill in is the Authorized redirect URI. You can set this to a phony URL, for example `http://localhost/authcallback`, or to `https://lesander.github.io/magister-calendar/gauthhelper.html` to be able to read the auth key easily (more on that later in the readme).
 When that's all done, hit the Done button.
 
 ![Create Client ID Application name](http://img.prntscr.com/img?url=http://i.imgur.com/Evq752L.png)
