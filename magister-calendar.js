@@ -174,7 +174,6 @@ else {
     // It's not saturday, sunday, friday past time, past time (at any day), before time (at any day).
     // What kind of sorcery is this?
     tools.log("critical", "Could not determine period, this should never happen. Please open an issue at GitHub, with all log files.");
-    process.exit(1);
   }
 }
 
@@ -210,14 +209,12 @@ function requestNewToken(config, callback) {
   // Perform the request.
   request.post("https://accounts.google.com/o/oauth2/token", {form: form}, function(err, response, body) {
     if (err) {
-      tools.log("critical", "Problem requesting new OAuth2 token.", err);
-      process.exit(1);
+      return tools.log("critical", "Problem requesting new OAuth2 token.", err);
     }
     result = JSON.parse(body);
     // Check for errors.
     if (result.error) {
-      tools.log("critical", "Problem requesting new OAuth2 token: "+result.error.errors[0].message, result.error);
-      process.exit(1);
+      return tools.log("critical", "Problem requesting new OAuth2 token: "+result.error.errors[0].message, result.error);
     }
     // Update the Google Config.
     GOOGLE_CONFIG.access_token = result.access_token;
@@ -262,8 +259,7 @@ function fetchAppointments(err, magisterlogin) {
   }
   magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
     if (err) {
-      tools.log("critical", "Problem fetching appointments. ", err);
-      process.exit(1);
+      return tools.log("critical", "Problem fetching appointments. ", err);
     }
     // We got the appointments, now let's get the current course info.
     fetchCurrentCourse(magisterlogin, appointments, parseAppointments);
@@ -274,8 +270,7 @@ function fetchAppointments(err, magisterlogin) {
 function fetchCurrentCourse(magisterlogin, appointments, callback) {
   magisterlogin.currentCourse(function(err, currentcourse) {
     if (err) {
-      tools.log("critical", "Problem fetching current course. ", err);
-      process.exit(1);
+      return tools.log("critical", "Problem fetching current course. ", err);
     }
     // Callback to parseAppointments.
     callback(appointments, currentcourse);
