@@ -69,6 +69,8 @@ var GOOGLE_CONFIG = {
   "token_expiry": TOKENS.expiry_date
 }
 
+/* Load the pretty titles. */
+var TITLES = tools.loadJSONfile(TITLE_PATH);
 
 /* ====================
  * Check configuration.
