@@ -412,9 +412,15 @@ function parseAppointments(appointments, currentcourse) {
       appointment.prefix = "";
     }
 
+    // Make the title a bit more pretty
+    var title = appointment.description.split("-")[0].trim();
+    if (TITLES[title] != undefined) {
+      title = TITLES[title];
+    }
+
     // Format the agenda item.
     appointment.formatted = {
-      "title": appointment.prefix+appointment.description,
+      "title": appointment.prefix+" "+title,
       "location": "Lokaal "+appointment.location,
       "description": "Docent(e): "+appointment.teacher+"\nHuiswerk: "+appointment.homework+"\nId: "+appointment.id
     };
