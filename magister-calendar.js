@@ -72,6 +72,9 @@ var GOOGLE_CONFIG = {
 /* Load the pretty titles. */
 var TITLES = tools.loadJSONfile(TITLE_PATH);
 
+/* Load the address of the school. */
+var SCHOOL_ADDRESS = CONFIG.address;
+
 /* ====================
  * Check configuration.
  * ==================== */
@@ -421,7 +424,7 @@ function parseAppointments(appointments, currentcourse) {
     // Format the agenda item.
     appointment.formatted = {
       "title": appointment.prefix+" "+title,
-      "location": "Lokaal "+appointment.location,
+      "location": "Lokaal "+appointment.location +"\n"+SCHOOL_ADDRESS,
       "description": "Docent(e): "+appointment.teacher+"\nHuiswerk: "+appointment.homework+"\nId: "+appointment.id
     };
 

@@ -6,6 +6,7 @@
   "magister_url": "",
   "magister_username": "",
   "magister_password": "",
+  "address": "Straat 10, 1234 AA Amsterdam, Nederland",
   "pushover": {
     "enabled": false,
     "token": "",
