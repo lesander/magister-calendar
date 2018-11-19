@@ -317,7 +317,7 @@ function parseAppointments(appointments, currentcourse) {
     });
   }
 
-  /* The following block of code is written for a specific school using Magister,
+  /* The following block of code is written for two specific schools using Magister,
      because their appointments always have wrong end times. */
   if (CONFIG.magister_url.indexOf("dspierson") > -1) {
     // Identify the user as upper or lower class.
@@ -327,21 +327,52 @@ function parseAppointments(appointments, currentcourse) {
       tools.log("info", "Identified logged in user as member of upper classes.");
       var firstBreakBeginsNow = 3;
       var secondBreakBeginsNow = 5;
+      
       var firstBreakBeginTuesday = ["10", "45"];
       var secondBreakBeginTuesday = ["12", "40"];
       var firstBreakBegin = ["11", "00"];
       var secondBreakBegin = ["13", "05"];
-    }
-    else {
+    } else {
       // Onderbouw (1, 2, 3).
       var group = "onderbouw";
       tools.log("info", "Identified logged in user as member of lower classes.");
       var firstBreakBeginsNow = 2;
       var secondBreakBeginsNow = 4;
+      
       var firstBreakBeginTuesday = ["10", "00"];
       var secondBreakBeginTuesday = ["11", "55"];
       var firstBreakBegin = ["10", "10"];
       var secondBreakBegin = ["12", "15"];
+    }
+  } else if (CONFIG.magister_url.indexOf("zwin") > -1) {
+    var char1 = currentcourse.group().description.charAt(1);
+    var char2 = currentcourse.group().description.charAt(2);
+
+    // Identify the user as upper or lower class.
+    if (char1 == "4" || char1 == "5" || char1 == "6" || char2 == "4" || char2 == "5" || char2 == "6") {
+      // Bovenbouw (4, 5, 6).
+      var group = "bovenbouw";
+      tools.log("info", "Identified logged in user as member of upper classes.");
+      var firstBreakBeginsNow = 3;
+      var secondBreakBeginsNow = 5;
+      var secondBreakBeginsNowTuesday = 6;
+
+      var firstBreakBeginTuesday = ["10", "15"];
+      var secondBreakBeginTuesday = ["12", "30"];
+      var firstBreakBegin = ["10", "45"];
+      var secondBreakBegin = ["12", "40"];
+    } else {
+      // Onderbouw (4, 5, 6).
+      var group = "onderbouw";
+      tools.log("info", "Identified logged in user as member of lower classes.");
+      var firstBreakBeginsNow = 2;
+      var secondBreakBeginsNow = 4;
+      var secondBreakBeginsNowTuesday = 5;
+
+      var firstBreakBeginTuesday = ["9", "35"];
+      var secondBreakBeginTuesday = ["11", "50"];
+      var firstBreakBegin = ["9", "55"];
+      var secondBreakBegin = ["11", "50"];
     }
   }
   /* End of special code block. */
@@ -383,7 +414,7 @@ function parseAppointments(appointments, currentcourse) {
       appointment.id = newid;
     }
 
-    /* The following block of code is written for a specific school using Magister,
+    /* The following block of code is written for two specific schools using Magister,
        because their appointments always have wrong end times. */
     if (CONFIG.magister_url.indexOf("dspierson") > -1) {
       // Check if we need to change end times for this appointment.
@@ -403,6 +434,28 @@ function parseAppointments(appointments, currentcourse) {
         appointment.end = new Date(epoch).toISOString();
       }
       else if (appointment.schoolhour == secondBreakBeginsNow) {
+        epoch = new Date(appointment.end).setHours(secondBreakBegin[0]);
+        epoch = new Date(epoch).setMinutes(secondBreakBegin[1]);
+        appointment.end = new Date(epoch).toISOString();
+      }
+    } else if (CONFIG.magister_url.indexOf("zwin") > -1) {
+      // Check if we need to change end times for this appointment.
+      if (new Date(appointment.begin).getDay() == 2 && appointment.schoolhour == firstBreakBeginsNow) {
+        epoch = new Date(appointment.end).setHours(firstBreakBeginTuesday[0]);
+        epoch = new Date(epoch).setMinutes(firstBreakBeginTuesday[1]);
+        appointment.end = new Date(epoch).toISOString();
+      }
+      else if (new Date(appointment.begin).getDay() == 2 && appointment.schoolhour == secondBreakBeginsNowTuesday) {
+        epoch = new Date(appointment.end).setHours(secondBreakBeginTuesday[0]);
+        epoch = new Date(epoch).setMinutes(secondBreakBeginTuesday[1]);
+        appointment.end = new Date(epoch).toISOString();
+      }
+      else if (new Date(appointment.begin).getDay() != 2 && appointment.schoolhour == firstBreakBeginsNow) {
+        epoch = new Date(appointment.end).setHours(firstBreakBegin[0]);
+        epoch = new Date(epoch).setMinutes(firstBreakBegin[1]);
+        appointment.end = new Date(epoch).toISOString();
+      }
+      else if (new Date(appointment.begin).getDay() != 2 && appointment.schoolhour == secondBreakBeginsNow) {
         epoch = new Date(appointment.end).setHours(secondBreakBegin[0]);
         epoch = new Date(epoch).setMinutes(secondBreakBegin[1]);
         appointment.end = new Date(epoch).toISOString();
