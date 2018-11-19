@@ -27,7 +27,7 @@ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
     process.env.USERPROFILE) + "/.credentials/";
 var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
 var CACHE_PATH = "cache/";
-var TITLE_PATH = "titles.json"
+var TITLE_PATH = "titles.json";
 
 /* Say hello to our creator. */
 tools.log("info", "Magister Calendar v" + VERSION + " started.\n[*] System Time: " + new Date().toLocaleTimeString() + ", date: " + new Date().toUTCString());
