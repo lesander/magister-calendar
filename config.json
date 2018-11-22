@@ -6,7 +6,15 @@
   "magister_url": "",
   "magister_username": "",
   "magister_password": "",
-  "address": "Straat 10, 1234 AA Amsterdam, Nederland",
+  "address": {
+    "enabled": true,
+    "default": "Nieuwstraat 50\n4501 BE Oostburg\nNetherlands",
+    "base_on": "location",
+    "alternatives": {
+      "location": "alternative address",
+      "or title": "another address"
+    }
+  },
   "pushover": {
     "enabled": false,
     "token": "",

@@ -72,9 +72,6 @@ var GOOGLE_CONFIG = {
 /* Load the pretty titles. */
 var TITLES = tools.loadJSONfile(TITLE_PATH);
 
-/* Load the address of the school. */
-var SCHOOL_ADDRESS = CONFIG.address;
-
 /* Get the name of the school (first part of the url) */
 var SCHOOL_NAME = CONFIG.magister_url.split(".")[0].split("/")[2]; // First part gets rid of .magister.net second part gets rid of http:// or https://
 tools.log("info", "Student is a member of: " + SCHOOL_NAME);
@@ -141,9 +138,31 @@ if (typeof(CONFIG.reminders) != "object" || CONFIG.reminders.length > 5) {
 }
 
 /* Check if custom function are defined. */
-if (typeof(custom_script.getTitle) !== "function" || typeof(custom_script.fixTimes) !== "function") {
+if (typeof(custom_script.getTitle) != "function" || typeof(custom_script.fixTimes) != "function") {
   tools.log("error", "CUSTOM FUNCTIONS IMPROPERLY DEFINED!");
   process.exit(1);
+}
+
+/* Check if the address section is correct. */
+if (typeof(CONFIG.address.enabled) != "boolean") {
+  tools.log("error", "CONFIG PARSE ERROR: 'address.enabled' has invalid value.");
+  process.exit(1);
+} else if (CONFIG.address.enabled == true) {
+  if (typeof(CONFIG.address.default) != "string") {
+    tools.log("error", "CONFIG PARSE ERROR: 'address.default' has invalid value.");
+    process.exit(1);
+  }
+  tools.log("info", CONFIG.address.base_on);
+  if (typeof(CONFIG.address.base_on) != "string" && (CONFIG.address.base_on == "location" || CONFIG.address.base_on == "title")) {
+    tools.log("error", "CONFIG PARSE ERROR: 'address.base_on' has invalid value (should either be 'location' or 'title').");
+    process.exit(1);
+  } else {
+    tools.log("info", "Appointment locations are based on " + CONFIG.address.base_on + ".");
+  }
+  if (typeof(CONFIG.address.alternatives) != "object") {
+    tools.log("error", "CONFIG PARSE ERROR: 'address.alternatives' has invalid value.");
+    process.exit(1);
+  }
 }
 
 /* ======================================
@@ -387,10 +406,28 @@ function parseAppointments(appointments, currentcourse) {
       title = TITLES[title];
     }
 
+    // Fetch the address of the appointment if needed
+    var location_address = "";
+    if (CONFIG.address.enabled) {
+      if (CONFIG.address.base_on == "location") {
+        if (typeof(CONFIG.address.alternatives[appointment.location]) != "undefined") {
+          location_address = "\n" + CONFIG.address.alternatives[appointment.location];
+        } else {
+          location_address = "\n" + CONFIG.address.default;
+        }
+      } else if (CONFIG.address.base_on == "title") {
+        if (typeof(CONFIG.address.alternatives[title]) != "undefined") {
+          location_address = "\n" + CONFIG.address.alternatives[title];
+        } else {
+          location_address = "\n" + CONFIG.address.default;
+        }
+      }
+    }
+
     // Format the agenda item.
     appointment.formatted = {
       "title": appointment.prefix+" "+title,
-      "location": "Lokaal "+appointment.location +"\n"+SCHOOL_ADDRESS,
+      "location": "Lokaal "+appointment.location + location_address,
       "description": "Docent(e): "+appointment.teacher+"\nHuiswerk: "+appointment.homework+"\nId: "+appointment.id
     };
 
