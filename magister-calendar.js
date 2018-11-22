@@ -75,6 +75,19 @@ var TITLES = tools.loadJSONfile(TITLE_PATH);
 /* Load the address of the school. */
 var SCHOOL_ADDRESS = CONFIG.address;
 
+/* Get the name of the school (first part of the url) */
+var SCHOOL_NAME = CONFIG.magister_url.split(".")[0].split("/")[2]; // First part gets rid of .magister.net second part gets rid of http:// or https://
+tools.log("info", "Student is a member of: " + SCHOOL_NAME);
+
+/* load the custom scripts file */
+if (fs.existsSync("./custom/" + SCHOOL_NAME + ".js")) {
+  tools.log("info", "Custom scripts found - loading them.");
+  var custom_script =  require("./custom/" + SCHOOL_NAME + ".js");
+} else {
+  tools.log("info", "No custom scripts found - loading default.");
+  var custom_script =  require("./custom/default.js");
+}
+
 /* ====================
  * Check configuration.
  * ==================== */
@@ -124,6 +137,12 @@ if (typeof(CONFIG.blacklist) != "object") {
 /* Check if reminders has a valid value. */
 if (typeof(CONFIG.reminders) != "object" || CONFIG.reminders.length > 5) {
   tools.log("error", "CONFIG PARSE ERROR: 'reminders' has invalid value or length.");
+  process.exit(1);
+}
+
+/* Check if custom function are defined. */
+if (typeof(custom_script.getTitle) !== "function" || typeof(custom_script.fixTimes) !== "function") {
+  tools.log("error", "CUSTOM FUNCTIONS IMPROPERLY DEFINED!");
   process.exit(1);
 }
 
@@ -462,6 +481,8 @@ function parseAppointments(appointments, currentcourse) {
       }
     }
     /* End of special code block. */
+    // Fix appointment times
+    appointment = custom_script.fixTimes(currentcourse, appointment);
 
     // Some appointments don't have a schoolhour assigned. This removes the prefix instead of schowing '[null]'
     if(appointment.schoolhour == null){
@@ -469,7 +490,7 @@ function parseAppointments(appointments, currentcourse) {
     }
 
     // Make the title a bit more pretty
-    var title = appointment.description.split("-")[0].trim();
+    var title = custom_script.getTitle(appointment.description);
     if (typeof TITLES[title] !== 'undefined') {
       title = TITLES[title];
     }
