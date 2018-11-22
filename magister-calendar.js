@@ -470,7 +470,7 @@ function parseAppointments(appointments, currentcourse) {
 
     // Make the title a bit more pretty
     var title = appointment.description.split("-")[0].trim();
-    if (TITLES[title] != undefined) {
+    if (typeof TITLES[title] !== 'undefined') {
       title = TITLES[title];
     }
 
