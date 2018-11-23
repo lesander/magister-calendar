@@ -114,6 +114,33 @@ The `reminders` array can be used to get up to 5 different reminders for every a
 
 ---
 
+```json
+{"address": {
+    "enabled": true,
+    "default": "Nieuwstraat 50\n4501 BE Oostburg\nNetherlands",
+    "base_on": "location",
+    "alternatives": {
+      "location": "alternative address",
+      "or title": "another address"
+    }
+  }
+}
+```
+The `address` can be configured by simply filling in the values. Make sure that `base_on` is set to either `location` or `title`. If you wish to disable this feature set `enabled` to `false`.
+
+---
+
+The file `titles.json` contains a lookup for subject abbrevations. Par example `biol` stands for `biology`, using `titles.json` the proper title of the course can be looked up. Keep in mind that the title of the course might not be the same as seen on magister as it it first parsed through the title parser. We recommend you first run the script once and then take a look at how the titles are filled in on your Google calendar.
+
+---
+
+You'll find a folder called `custom/`, this folder contains custom scripts as each school tends to do things a bit differently. If you take a look at `custom/default.js` you'll notice there are two functions you can override. One of them is how titles are parsed, if this is done properly Magister Calendar will be able to look up a more pretty title in `titles.json` if neccesary.
+
+The other function can be used to fix the beginning/end times of courses, a lot of schools tend to include the breaks in their appointments which can be annoying. We suggest you take a look at either `custom/dspierson.js` or `custom/zwin.js` for an exmaple.
+
+If you choose to override a default function you should duplicate the file and rename it to `custom/yourSchoolsName.js`. The name of your school can be found at the beginning of your Magister's URL (par example: `zwin.magister.net` -> `zwin`).
+
+---
 The default [`config.json`](config.json) file can be found in the root of the project's folder.
 
 Please note that before setting up a cronjob, it'd be clever to try out Magister Calendar with your configuration manually, by running `nodejs /path/to/magister-calendar.js` and checking the result for any thrown notices, warnings and errors.
