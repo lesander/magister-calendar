@@ -23,6 +23,16 @@
   },
   "remove_cancelled_classes": true,
   "blacklist": ["", "KWT"],
+  "cancel_class_if": [
+    "absent",
+    "_late",
+    "sick",
+    "_discharged",
+    "exemption",
+    "_books",
+    "_homework",
+    "unkown"
+  ],
   "reminders": [
     { "method": "popup", "minutes": "5" }
   ]

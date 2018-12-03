@@ -165,6 +165,12 @@ if (typeof(CONFIG.address.enabled) != "boolean") {
   }
 }
 
+// Check if the absentee info is correct. */
+if (!Array.isArray(CONFIG.cancel_class_if)) {
+  tools.log("error", "CONFIG PARSE ERORR: 'cancel_class_if' must be an array.");
+  process.exit(1);
+}
+
 /* ======================================
  * Determine appointment period to fetch.
  * ====================================== */
@@ -379,6 +385,16 @@ function parseAppointments(appointments, currentcourse) {
       "prefix": "[" + appointments[i].beginBySchoolHour() + "] ",
       "formatted": {}
     };
+
+    // Check if there is any absence info.
+    if (typeof appointments[i].absenceInfo() !== 'undefined') {
+      if (appointments[i].absenceInfo().permitted() == true) {
+        if (CONFIG.cancel_class_if.includes(appointments[i].absenceInfo().typeString())) {
+          tools.log("info", `Permitted to skip class - cancelled (reason: ${appointments[i].absenceInfo().typeString()}).`);
+          appointment.status = 4; // Setting the status to 5 would work as well.. don't know the difference really
+        }
+      }
+    }
 
     // Add teacher's name if there is any.
     if (appointments[i].teachers().length > 0) {
