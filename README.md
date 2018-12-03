@@ -130,6 +130,27 @@ The `address` can be configured by simply filling in the values. Make sure that 
 
 ---
 
+```json
+{"cancel_class_if": [
+    "absent",
+    "exemption",
+    "unkown"
+  ]
+}
+```
+Some schools don't cancel an appointment even if you are not required to attend (visitors day of a university par example). This section allows you to change this. If you are allowed to skip the class (permitted) and the reason is in this list the appointment will be removed. Possible values are as follow:
+* `"absent"`
+* `"late"`
+* `"sick"`
+* `"discharged"`
+* `"exemption"`
+* `"books"`
+* `"homework"`
+
+Leave the array empty to disable this feature.
+
+---
+
 The file `titles.json` contains a lookup for subject abbrevations. Par example `biol` stands for `biology`, using `titles.json` the proper title of the course can be looked up. Keep in mind that the title of the course might not be the same as seen on magister as it it first parsed through the title parser. We recommend you first run the script once and then take a look at how the titles are filled in on your Google calendar.
 
 ---
