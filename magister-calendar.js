@@ -9,28 +9,33 @@
 
 /* ======================
  * Load our requirements.
- * ====================== */
+ * ====================== 
+ */
 
  /* Require all the modules! */
- const { default: magister, getSchools } = require('magister.js');
+ var { default: magister, getSchools } = require('magister.js');
  var fs = require("fs");
  var request = require("request");
  var util = require("util");
  var tools = require("./assets/tools.js");
 
  /* Set our settings. */
- var VERSION = "1.8.3";
- var DEBUG = false;
- var CONFIG_PATH = "config.json";
- var CLIENT_PATH = "client_secret.json";
- var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
+ const VERSION = tools.loadJSONfile("./package.json").version;
+ 
+ const CONFIG_PATH = "config.json";
+ const TITLE_PATH = "titles.json";
+ const CLIENT_PATH = "client_secret.json";
+ 
+ const TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
   process.env.USERPROFILE) + "/.credentials/";
- var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
- var CACHE_PATH = "cache/";
- var TITLE_PATH = "titles.json";
+ const TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
+ 
+ const CACHE_PATH = "cache/";
 
+ var DEBUG = false;
+ 
  /* Say hello to our creator. */
- tools.log("info", "Magister Calendar v" + VERSION + " started.\n[*] System Time: " + new Date().toLocaleTimeString() + ", date: " + new Date().toUTCString());
+ tools.log("info", `Magister Calendar v${VERSION}.\n[*] System time: ${new Date().toLocaleTimeString()}, date: ${new Date().toUTCString()}.\n`);
 
  /* Make sure we have our cache folder. */
  fs.mkdir(CACHE_PATH, function(err) {
@@ -48,19 +53,18 @@
 
 /* =========================
  * Load configuration files.
- * ========================= */
+ * ========================= 
+ */
 
  /* Load the config.json file. */
- var CONFIG = tools.loadJSONfile(CONFIG_PATH);
-
+ const CONFIG = tools.loadJSONfile(CONFIG_PATH);
  /* Load the client_secret.json file. */
- var CLIENT_SECRET = tools.loadJSONfile(CLIENT_PATH);
-
+ const CLIENT_SECRET = tools.loadJSONfile(CLIENT_PATH);
  /* Load our access tokens. */
- var TOKENS = tools.loadJSONfile(TOKEN_PATH);
+ const TOKENS = tools.loadJSONfile(TOKEN_PATH);
 
  /* Set our Google configuration. */
- var GOOGLE_CONFIG = {
+ const GOOGLE_CONFIG = {
   "client_id": CLIENT_SECRET.web.client_id,
   "client_secret": CLIENT_SECRET.web.client_secret,
   "calendar_id": CONFIG.calendar,
@@ -70,11 +74,10 @@
 }
 
 /* Load the pretty titles. */
-var TITLES = tools.loadJSONfile(TITLE_PATH);
+const TITLES = tools.loadJSONfile(TITLE_PATH);
 
 /* Get the name of the school (first part of the url) */
-var SCHOOL_NAME = CONFIG.magister_url.split(".")[0].split("/")[2]; // First part gets rid of .magister.net second part gets rid of http:// or https://
-tools.log("info", "Student is a member of: " + SCHOOL_NAME);
+const SCHOOL_NAME = CONFIG.magister_url.split(".")[0].split("/")[2]; // First part gets rid of .magister.net second part gets rid of http:// or https://
 
 /* load the custom scripts file */
 if (fs.existsSync("./custom/" + SCHOOL_NAME + ".js")) {
@@ -87,7 +90,8 @@ if (fs.existsSync("./custom/" + SCHOOL_NAME + ".js")) {
 
 /* ====================
  * Check configuration.
- * ==================== */
+ * ==================== 
+ */
 
  /* Enable debugging by config if it's defined. */
  if (typeof CONFIG.debug == "boolean") {
@@ -173,7 +177,8 @@ if (!Array.isArray(CONFIG.cancel_class_if)) {
 
 /* ======================================
  * Determine appointment period to fetch.
- * ====================================== */
+ * ====================================== 
+ */
 
  /* Determine the period to fetch the appointments for. */
  var PERIOD = {};
@@ -291,7 +296,8 @@ function requestNewToken(config, callback) {
 
 /* =================================
  * Fetch appointments from Magister.
- * ================================= */
+ * ================================= 
+ */
 
  /* Login to Magister. */
  function magisterLogin() {
