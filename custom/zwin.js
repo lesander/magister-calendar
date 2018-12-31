@@ -1,3 +1,5 @@
+var tools = require("../assets/tools.js");
+
 module.exports = {
   /* This function should return the course title
    * from the (sometimes) messy title Magister gives.
@@ -9,7 +11,7 @@ module.exports = {
    * You should change this function depending on how
    * your school's Magister gives the title.
    */
-  getTitle: function(title) {
+   getTitle: function(title) {
     return title.split("-")[0].trim();
   },
 
@@ -22,12 +24,12 @@ module.exports = {
    * 
    * See zwin.js or dspierson.js for examples
    */
-  fixTimes: function(course, appointment) {
-    var char1 = course.group().description.charAt(1);
-    var char2 = course.group().description.charAt(2);
+   fixTimes: function(course, appointment) {
+    var description = course.type.description;
+    var year = description.charAt(description.length -1);
 
     // Identify the user as upper or lower class.
-    if (char1 == "4" || char1 == "5" || char1 == "6" || char2 == "4" || char2 == "5" || char2 == "6") {
+    if (year == "4" || year == "5" || year == "6") {
       // Bovenbouw (4, 5, 6).
       var firstBreakBeginsNow = 3;
       var secondBreakBeginsNow = 5;
@@ -38,7 +40,7 @@ module.exports = {
       var firstBreakBegin = ["10", "45"];
       var secondBreakBegin = ["12", "40"];
     } else {
-      // Onderbouw (4, 5, 6).
+      // Onderbouw (1, 2, 3).
       var firstBreakBeginsNow = 2;
       var secondBreakBeginsNow = 4;
       var secondBreakBeginsNowTuesday = 5;

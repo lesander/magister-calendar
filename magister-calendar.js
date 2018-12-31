@@ -11,29 +11,29 @@
  * Load our requirements.
  * ====================== */
 
-/* Require all the modules! */
-var fs = require("fs");
-var Magister = require("magister.js");
-var request = require("request");
-var util = require("util");
-var tools = require("./assets/tools.js");
+ /* Require all the modules! */
+ const { default: magister, getSchools } = require('magister.js');
+ var fs = require("fs");
+ var request = require("request");
+ var util = require("util");
+ var tools = require("./assets/tools.js");
 
-/* Set our settings. */
-var VERSION = "1.8.3";
-var DEBUG = false;
-var CONFIG_PATH = "config.json";
-var CLIENT_PATH = "client_secret.json";
-var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
-    process.env.USERPROFILE) + "/.credentials/";
-var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
-var CACHE_PATH = "cache/";
-var TITLE_PATH = "titles.json";
+ /* Set our settings. */
+ var VERSION = "1.8.3";
+ var DEBUG = false;
+ var CONFIG_PATH = "config.json";
+ var CLIENT_PATH = "client_secret.json";
+ var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
+  process.env.USERPROFILE) + "/.credentials/";
+ var TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
+ var CACHE_PATH = "cache/";
+ var TITLE_PATH = "titles.json";
 
-/* Say hello to our creator. */
-tools.log("info", "Magister Calendar v" + VERSION + " started.\n[*] System Time: " + new Date().toLocaleTimeString() + ", date: " + new Date().toUTCString());
+ /* Say hello to our creator. */
+ tools.log("info", "Magister Calendar v" + VERSION + " started.\n[*] System Time: " + new Date().toLocaleTimeString() + ", date: " + new Date().toUTCString());
 
-/* Make sure we have our cache folder. */
-fs.mkdir(CACHE_PATH, function(err) {
+ /* Make sure we have our cache folder. */
+ fs.mkdir(CACHE_PATH, function(err) {
   if (err) {
     if (err.code != "EEXIST") {
       tools.log("error", "Could not create folder 'cache/'.", err);
@@ -50,17 +50,17 @@ fs.mkdir(CACHE_PATH, function(err) {
  * Load configuration files.
  * ========================= */
 
-/* Load the config.json file. */
-var CONFIG = tools.loadJSONfile(CONFIG_PATH);
+ /* Load the config.json file. */
+ var CONFIG = tools.loadJSONfile(CONFIG_PATH);
 
-/* Load the client_secret.json file. */
-var CLIENT_SECRET = tools.loadJSONfile(CLIENT_PATH);
+ /* Load the client_secret.json file. */
+ var CLIENT_SECRET = tools.loadJSONfile(CLIENT_PATH);
 
-/* Load our access tokens. */
-var TOKENS = tools.loadJSONfile(TOKEN_PATH);
+ /* Load our access tokens. */
+ var TOKENS = tools.loadJSONfile(TOKEN_PATH);
 
-/* Set our Google configuration. */
-var GOOGLE_CONFIG = {
+ /* Set our Google configuration. */
+ var GOOGLE_CONFIG = {
   "client_id": CLIENT_SECRET.web.client_id,
   "client_secret": CLIENT_SECRET.web.client_secret,
   "calendar_id": CONFIG.calendar,
@@ -89,8 +89,8 @@ if (fs.existsSync("./custom/" + SCHOOL_NAME + ".js")) {
  * Check configuration.
  * ==================== */
 
-/* Enable debugging by config if it's defined. */
-if (typeof CONFIG.debug == "boolean") {
+ /* Enable debugging by config if it's defined. */
+ if (typeof CONFIG.debug == "boolean") {
   var DEBUG = CONFIG.debug;
 }
 if (DEBUG == true) {
@@ -101,10 +101,10 @@ if (DEBUG == true) {
 
 /* Check magister values. */
 if (CONFIG.magister_url == "" || CONFIG.magister_username == "" || CONFIG.magister_password == "" ||
-    typeof(CONFIG.magister_url) != "string" || typeof(CONFIG.magister_username) != "string" ||
-    typeof(CONFIG.magister_password) != "string") {
+  typeof(CONFIG.magister_url) != "string" || typeof(CONFIG.magister_username) != "string" ||
+  typeof(CONFIG.magister_password) != "string") {
   tools.log("error", "CONFIG PARSE ERROR: Magister configuration is not filled in.");
-  process.exit(1);
+process.exit(1);
 }
 
 /* Check if calendar has a value. */
@@ -175,17 +175,17 @@ if (!Array.isArray(CONFIG.cancel_class_if)) {
  * Determine appointment period to fetch.
  * ====================================== */
 
-/* Determine the period to fetch the appointments for. */
-var PERIOD = {};
-var today = {};
-    today.date = new Date();
-    today.day = new Date().getDay();
-    today.time = new Date().getHours();
-    PERIOD.start = today.date;
-    PERIOD.end = today.date;
+ /* Determine the period to fetch the appointments for. */
+ var PERIOD = {};
+ var today = {};
+ today.date = new Date();
+ today.day = new Date().getDay();
+ today.time = new Date().getHours();
+ PERIOD.start = today.date;
+ PERIOD.end = today.date;
 
-/* Start our period algorithm. */
-if (typeof(CONFIG.period) == "number") {
+ /* Start our period algorithm. */
+ if (typeof(CONFIG.period) == "number") {
   // Fetch appointments for the next given days.
   tools.log("info", "Fetching appointments for the coming " + CONFIG.period + " days.");
   PERIOD.start = PERIOD.start.setDate(today.date.getDate());
@@ -229,7 +229,7 @@ else {
 }
 
 /* Magister does not look at the time we provide with our stamps,
-   so there's no need to set the hours of the dates. */
+so there's no need to set the hours of the dates. */
 tools.log("info", "Determined period is:\nFrom " + new Date(PERIOD.start) + "\nTo " + new Date(PERIOD.end) + ".");
 
 
@@ -237,9 +237,9 @@ tools.log("info", "Determined period is:\nFrom " + new Date(PERIOD.start) + "\nT
  * Prepare Google OAuth.
  * ===================== */
 
-/* Check if the Google OAuth2 token is still valid for atleast 5 minutes. */
-var inFiveMinutes = new Date().getTime() + 300000;
-if (GOOGLE_CONFIG.token_expiry < inFiveMinutes) {
+ /* Check if the Google OAuth2 token is still valid for atleast 5 minutes. */
+ var inFiveMinutes = new Date().getTime() + 300000;
+ if (GOOGLE_CONFIG.token_expiry < inFiveMinutes) {
   tools.log("notice", "Google OAuth2 token has expired. Requesting a new one.");
   requestNewToken(GOOGLE_CONFIG, magisterLogin);
 }
@@ -293,24 +293,31 @@ function requestNewToken(config, callback) {
  * Fetch appointments from Magister.
  * ================================= */
 
-/* Login to Magister. */
-function magisterLogin() {
-  new Magister.Magister({
-    school: {url: CONFIG.magister_url},
-    username: CONFIG.magister_username,
-    password: CONFIG.magister_password
-  }).ready(function(err) {
-    fetchAppointments(err, this);
+ /* Login to Magister. */
+ function magisterLogin() {
+  tools.log("info", `Looking for schools matching: ${SCHOOL_NAME}.`);
+  getSchools(SCHOOL_NAME)
+  .then((schools) => schools[0])
+  .then((school) => {
+    tools.log("info", `Found a school: ${school.name}`);
+    return magister({
+      school,
+      username: CONFIG.magister_username,
+      password: CONFIG.magister_password,
+    });
+  })
+  .then((m, err) => {
+    fetchAppointments(m);
+  }, (err) => {
+    tools.log("error", "Could not login to magister.", err);
+    process.exit(1);
   });
 }
 
 /* Fetch appointments. */
-function fetchAppointments(err, magisterlogin) {
-  if (err) {
-    tools.log("error", "Could not login to magister.", err);
-    process.exit(1);
-  }
-  magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false, function(err, appointments) {
+function fetchAppointments(magisterlogin) {
+  tools.log("info", `Hey there ${magisterlogin.profileInfo.firstName}! Let me fetch your appointments.`);
+  magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false).then(function(appointments, err) {
     if (err) {
       tools.log("critical", "Problem fetching appointments. ", err);
       process.exit(1);
@@ -322,20 +329,27 @@ function fetchAppointments(err, magisterlogin) {
 
 /* Fetch current course information. */
 function fetchCurrentCourse(magisterlogin, appointments, callback) {
-  magisterlogin.currentCourse(function(err, currentcourse) {
+  magisterlogin.courses()
+  .then((courses, err) => {
     if (err) {
       tools.log("critical", "Problem fetching current course. ", err);
       process.exit(1);
     }
-    // Callback to parseAppointments.
-    callback(appointments, currentcourse);
+    for (var i = courses.length - 1; i >= 0; i--) {
+      course = courses[i];
+      if (course.current) {
+        tools.log("info", `Found an active course: ${course.type.description}`);
+        callback(appointments, course);
+        break;
+      }
+    }
   });
 }
 
 /* Check if appointment is blacklisted. */
 function blacklisted(appointment, i) {
   for (b = 0; b < CONFIG.blacklist.length; b++) {
-    if (appointment.description() == CONFIG.blacklist[b]) {
+    if (appointment.description == CONFIG.blacklist[b]) {
       tools.log("notice", appointment.id() + " Skipping blacklisted appointment.");
       return true;
     }
@@ -348,12 +362,12 @@ function blacklisted(appointment, i) {
  * Parse the appointments & prepare agenda items.
  * ============================================== */
 
-/* Parse appointments. */
-function parseAppointments(appointments, currentcourse) {
+ /* Parse appointments. */
+ function parseAppointments(appointments, currentcourse) {
 
   // Save appointment json for debugging purposes.
   if (DEBUG) {
-    fs.writeFile(CACHE_PATH + "magister-debug.dump", util.inspect(appointments), function(err) {
+    fs.writeFileSync(CACHE_PATH + "magister-debug.dump", util.inspect(appointments), function(err) {
       if (err) {
         return tools.log("error", "Problem saving magister debug dump to file.", err);
       }
@@ -371,38 +385,38 @@ function parseAppointments(appointments, currentcourse) {
     // Build the appointment object.
     var appointment = {
       "version": "2.0.0",
-      "id": appointments[i].id(),
-      "location": appointments[i].location(),
-      "description": appointments[i].description(),
-      "begin": appointments[i].begin(),
-      "end": appointments[i].end(),
-      "schoolhour": appointments[i].beginBySchoolHour(),
-      "class": appointments[i].classes()[0],
-      "status": appointments[i].status(),
-      "scrapped": appointments[i].scrapped(),
-      "type": appointments[i].type(),
-      "homework": appointments[i].content(),
-      "prefix": "[" + appointments[i].beginBySchoolHour() + "] ",
+      "id": appointments[i].id,
+      "location": appointments[i].location,
+      "description": appointments[i].description,
+      "begin": appointments[i].start,
+      "end": appointments[i].end,
+      "schoolhour": appointments[i].beginBySchoolHour,
+      "class": appointments[i].classes[0],
+      "status": appointments[i].status,
+      "scrapped": appointments[i].scrapped,
+      "type": appointments[i].type,
+      "homework": appointments[i].content,
+      "prefix": "[" + appointments[i].beginBySchoolHour + "] ",
       "formatted": {}
     };
 
     // Check if there is any absence info.
-    if (typeof appointments[i].absenceInfo() !== 'undefined') {
-      if (appointments[i].absenceInfo().permitted() == true) {
+    if (typeof appointments[i].absenceInfo !== 'undefined') {
+      if (appointments[i].absenceInfo.permitted == true) {
         if (CONFIG.cancel_class_if.includes(appointments[i].absenceInfo().typeString())) {
-          tools.log("info", `Permitted to skip class - cancelled (reason: ${appointments[i].absenceInfo().typeString()}).`);
+          tools.log("info", `Permitted to skip class - cancelled (reason: ${appointments[i].absenceInfo.typeString}).`);
           appointment.status = 4; // Setting the status to 5 would work as well.. don't know the difference really
         }
       }
     }
 
     // Add teacher's name if there is any.
-    if (appointments[i].teachers().length > 0) {
-     appointment.teacher = appointments[i].teachers()[0].fullName();
-    }
+    if (appointments[i].teachers.length > 0) {
+     appointment.teacher = appointments[i].teachers[0].fullName;
+   }
 
     // Check the ID.
-    if (appointments[i].id().length < 7 || appointments[i].id() == -1) {
+    if (appointments[i].id.length < 7 || appointments[i].id == -1) {
       var newid = "i" + new Date(appointment.begin).getTime();
       tools.log("notice", appointment.id + " Appointment has invalid ID, changing to '" + newid + "'.");
       appointment.id = newid;
@@ -507,8 +521,8 @@ function parseAppointments(appointments, currentcourse) {
  * Send agenda items to Google Calendar.
  * ===================================== */
 
-/* Send a calendar item to Google. */
-function calendarItem(action, appointment, googleconfig, retry) {
+ /* Send a calendar item to Google. */
+ function calendarItem(action, appointment, googleconfig, retry) {
   // Construct the form object as per v3 of the Calendar API.
   var form = {
     "client_id": googleconfig.client_id,
@@ -581,12 +595,12 @@ function calendarItem(action, appointment, googleconfig, retry) {
     }
   }, function(err, response, body) {
     // Debug response to file.
-    if (DEBUG) fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
+    if (DEBUG) fs.writeFileSync(CACHE_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
 
     // Check for request error.
     if (err) {
       return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", err);
-      fs.writeFile(CACHE_PATH + "appointment_" + appointment.id + "_request_error.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
+      fs.writeFileSync(CACHE_PATH + "appointment_" + appointment.id + "_request_error.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
     }
 
     // Check for response error.
@@ -601,14 +615,14 @@ function calendarItem(action, appointment, googleconfig, retry) {
 
       // Check if we should use exponential backoff.
       if (
-          (body.error.code == 403 && body.error.errors[0].reason == "rateLimitExceeded") ||
-          (body.error.code == 503 && body.error.errors[0].reason == "backendError")
-         ) {
+        (body.error.code == 403 && body.error.errors[0].reason == "rateLimitExceeded") ||
+        (body.error.code == 503 && body.error.errors[0].reason == "backendError")
+        ) {
 
         // Make sure retry is set.
-        if (typeof retry == "undefined") {
-          var retry = 0;
-        }
+      if (typeof retry == "undefined") {
+        var retry = 0;
+      }
 
         // Only retry 10 times.
         if (retry/2 >= 10) {

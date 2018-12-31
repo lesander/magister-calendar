@@ -24,7 +24,7 @@ module.exports = {
    */
   fixTimes: function(course, appointment) {
     // Identify the user as upper or lower class.
-    if (course.group().description >= 4) {
+    if (course.group.description >= 4) {
       // Bovenbouw (4, 5, 6).
       var firstBreakBeginsNow = 3;
       var secondBreakBeginsNow = 5;
