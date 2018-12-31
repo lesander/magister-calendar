@@ -1,5 +1,6 @@
 node_modules/
 cache/
+debug/
 .git/
 client_secret.json
 npm-debug.log

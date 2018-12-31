@@ -31,6 +31,7 @@
  const TOKEN_PATH = TOKEN_DIR + "calendar-api.json";
  
  const CACHE_PATH = "cache/";
+ const DEBUG_PATH = "debug/";
 
  var DEBUG = false;
  
@@ -47,6 +48,18 @@
   }
   else {
     tools.log("info", "Created cache folder.");
+  }
+});
+  /* Make sure we have our debug folder. */
+ fs.mkdir(DEBUG_PATH, function(err) {
+  if (err) {
+    if (err.code != "EEXIST") {
+      tools.log("error", "Could not create folder 'debug/'.", err);
+      process.exit(1);
+    }
+  }
+  else {
+    tools.log("info", "Created debug folder.");
   }
 });
 
@@ -373,7 +386,7 @@ function blacklisted(appointment, i) {
 
   // Save appointment json for debugging purposes.
   if (DEBUG) {
-    fs.writeFileSync(CACHE_PATH + "magister-debug.dump", util.inspect(appointments), function(err) {
+    fs.writeFileSync(DEBUG_PATH + "magister-debug.dump", util.inspect(appointments), function(err) {
       if (err) {
         return tools.log("error", "Problem saving magister debug dump to file.", err);
       }
@@ -601,12 +614,12 @@ function blacklisted(appointment, i) {
     }
   }, function(err, response, body) {
     // Debug response to file.
-    if (DEBUG) fs.writeFileSync(CACHE_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
+    if (DEBUG) fs.writeFileSync(DEBUG_PATH + "appointment_" + appointment.id + "_response_debug.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
 
     // Check for request error.
     if (err) {
       return tools.log("error", appointment.id + " Error " + action.slice(0, -1) + "ing appointment.", err);
-      fs.writeFileSync(CACHE_PATH + "appointment_" + appointment.id + "_request_error.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
+      fs.writeFileSync(DEBUG_PATH + "appointment_" + appointment.id + "_request_error.json", JSON.stringify(err) + "\n" + JSON.stringify(response) + "\n" + JSON.stringify(body));
     }
 
     // Check for response error.
