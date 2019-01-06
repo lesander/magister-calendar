@@ -409,13 +409,13 @@ function blacklisted(appointment, i) {
       "description": appointments[i].description,
       "begin": appointments[i].start,
       "end": appointments[i].end,
-      "schoolhour": appointments[i].beginBySchoolHour,
+      "schoolhour": appointments[i].startBySchoolhour,
       "class": appointments[i].classes[0],
       "status": appointments[i].status,
       "scrapped": appointments[i].scrapped,
       "type": appointments[i].type,
       "homework": appointments[i].content,
-      "prefix": "[" + appointments[i].beginBySchoolHour + "] ",
+      "prefix": "[" + appointments[i].startBySchoolhour + "] ",
       "formatted": {}
     };
 
