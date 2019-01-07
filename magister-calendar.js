@@ -13,7 +13,7 @@
  */
 
  /* Require all the modules! */
- var { default: magister, getSchools } = require('magister.js');
+ var { default: magister } = require('magister.js');
  var fs = require("fs");
  var request = require("request");
  var util = require("util");
@@ -50,7 +50,7 @@
     tools.log("info", "Created cache folder.");
   }
 });
-  /* Make sure we have our debug folder. */
+ /* Make sure we have our debug folder. */
  fs.mkdir(DEBUG_PATH, function(err) {
   if (err) {
     if (err.code != "EEXIST") {
@@ -314,20 +314,11 @@ function requestNewToken(config, callback) {
 
  /* Login to Magister. */
  function magisterLogin() {
-  tools.log("info", `Looking for schools matching: ${SCHOOL_NAME}.`);
-  getSchools(SCHOOL_NAME)
-  .then((schools) => {
-    return schools[0];
-  })
-  .then((school) => {
-    tools.log("info", `Found a school: ${school.name}`);
-    return magister({
-      school,
-      username: CONFIG.magister_username,
-      password: CONFIG.magister_password,
-    });
-  })
-  .then((m) => {
+  new magister({
+    school: {url: CONFIG.magister_url},
+    username: CONFIG.magister_username,
+    password: CONFIG.magister_password
+  }).then((m) => {
     fetchAppointments(m);
   }, (err) => {
     tools.log("error", "Could not login to magister:", err.message);
