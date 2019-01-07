@@ -325,10 +325,10 @@ function requestNewToken(config, callback) {
       password: CONFIG.magister_password,
     });
   })
-  .then((m, err) => {
+  .then((m) => {
     fetchAppointments(m);
   }, (err) => {
-    tools.log("error", "Could not login to magister.", err);
+    tools.log("error", "Could not login to magister:", err.message);
     process.exit(1);
   });
 }
@@ -338,7 +338,7 @@ function fetchAppointments(magisterlogin) {
   tools.log("info", `Hey there ${magisterlogin.profileInfo.firstName}! Let me fetch your appointments.`);
   magisterlogin.appointments(new Date(PERIOD.start), new Date(PERIOD.end), false).then(function(appointments, err) {
     if (err) {
-      tools.log("critical", "Problem fetching appointments. ", err);
+      tools.log("critical", "Problem fetching appointments. ", err.message);
       process.exit(1);
     }
     // We got the appointments, now let's get the current course info.
@@ -351,7 +351,7 @@ function fetchCurrentCourse(magisterlogin, appointments, callback) {
   magisterlogin.courses()
   .then((courses, err) => {
     if (err) {
-      tools.log("critical", "Problem fetching current course. ", err);
+      tools.log("critical", "Problem fetching current course. ", err.message);
       process.exit(1);
     }
     for (var i = courses.length - 1; i >= 0; i--) {
@@ -388,7 +388,7 @@ function blacklisted(appointment, i) {
   if (DEBUG) {
     fs.writeFileSync(DEBUG_PATH + "magister-debug.dump", util.inspect(appointments), function(err) {
       if (err) {
-        return tools.log("error", "Problem saving magister debug dump to file.", err);
+        return tools.log("error", "Problem saving magister debug dump to file.", err.message);
       }
       return tools.log("info", "Saved magister debug dump to file.");
     });
