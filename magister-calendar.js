@@ -316,7 +316,9 @@ function requestNewToken(config, callback) {
  function magisterLogin() {
   tools.log("info", `Looking for schools matching: ${SCHOOL_NAME}.`);
   getSchools(SCHOOL_NAME)
-  .then((schools) => schools[0])
+  .then((schools) => {
+    return schools[0];
+  })
   .then((school) => {
     tools.log("info", `Found a school: ${school.name}`);
     return magister({
