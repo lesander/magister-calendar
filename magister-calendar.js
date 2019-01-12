@@ -169,8 +169,7 @@ if (typeof(CONFIG.address.enabled) != "boolean") {
     tools.log("error", "CONFIG PARSE ERROR: 'address.default' has invalid value.");
     process.exit(1);
   }
-  tools.log("info", CONFIG.address.base_on);
-  if (typeof(CONFIG.address.base_on) != "string" && (CONFIG.address.base_on == "location" || CONFIG.address.base_on == "title")) {
+  if (typeof(CONFIG.address.base_on) != "string" || !(CONFIG.address.base_on == "location" || CONFIG.address.base_on == "title")) {
     tools.log("error", "CONFIG PARSE ERROR: 'address.base_on' has invalid value (should either be 'location' or 'title').");
     process.exit(1);
   } else {
