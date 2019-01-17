@@ -8,18 +8,29 @@
 
 var fs = require("fs");
 var request = require("request");
+
 var LOG_HISTORY = "";
 
 module.exports = {
-  validjson: function (string) {
+  // Check JSON validity
+  validateJSON: function (string) {
     try {
       JSON.parse(string);
-    }
-    catch (e) {
+    } catch (e) {
       return false;
     }
     return true;
   },
+  // Add a 0 to digits so that
+  // the time in log functions
+  // looks better.
+  pad: function(n) {
+    return -1 < n && n < 10 ? '0' + n : n;
+  },
+  // Log a message to console
+  // if status is set to 'critical'
+  // the program will exit and 
+  // write a crash report to disk.
   log: function(status, text, error) {
     if (status == "error" || status == "critical") {
       var prefix = "!";
@@ -28,7 +39,7 @@ module.exports = {
       var prefix = "*";
     }
     var date = new Date();
-    var time = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+    var time = module.exports.pad(date.getHours()) + ":" + module.exports.pad(date.getMinutes()) + ":" + module.exports.pad(date.getSeconds());
     var logtext = "[" + prefix + "] " + time + " " + text;
     if (error) {
       var logtext = logtext + " " + JSON.stringify(error);
@@ -37,31 +48,34 @@ module.exports = {
     console.log(logtext);
     if (status == "critical") {
       module.exports.crashReport(LOG_HISTORY);
+      process.exit(1);
     }
   },
   loadJSONfile: function(path) {
+    // File variable
     var file;
+
+    // Try to read the file
     try {
       file = fs.readFileSync(path, "utf8");
-    }
-    catch (e) {
+    } catch (e) {
       if (e.code == "ENOENT") {
-        module.exports.log("error", "Config file " + path + " not found.", e);
-        process.exit(1);
-      }
-      else {
-        module.exports.log("error", "An error occured when opening " + path + ".", e);
-        throw e;
+        module.exports.log("critical", `JSON file ${path} not found.`, e);
+      } else {
+        module.exports.log("critical", `An error occured when opening ${path}.`, e);
       }
     }
-    if (!module.exports.validjson(file)) {
-      module.exports.log("error", "File " + path + " contains bogus JSON.");
-      process.exit(1);
-    }
-    return JSON.parse(file);
-  },
-  sendPushMessage: function(config, type, appointment, oldvalue) {
 
+    // Try to parse the file
+    try {
+      return JSON.parse(file);
+    } catch (e) {
+      module.exports.log("critical", `JSON file ${path} could not be parsed.`, e);
+    }
+  },
+  // Send a push notification
+  // if an appointment changed.
+  sendPushMessage: function(config, type, appointment, oldvalue) {
     // Check if push messages are enabled.
     if (typeof config == "undefined" || !config || config.enabled !== true) {
       return false;
