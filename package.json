@@ -13,21 +13,25 @@
   "license": "MIT",
   "analyze": true,
   "dependencies": {
-    "magister.js": "2.0.0-alpha.7",
-    "util": "0.10.x",
-    "googleapis": "2.1.x",
     "google-auth-library": "0.9.x",
-    "request": "2.65.x"
+    "googleapis": "2.1.x",
+    "magister.js": "2.0.0-alpha.7",
+    "npm": "^6.5.0",
+    "request": "2.65.x",
+    "util": "0.10.x"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/lesander/magister-calendar.git"
   },
   "scripts": {
-    "test": "nodejs magister-calendar.js test"
+    "test": "mocha"
   },
   "bugs": {
     "url": "https://github.com/lesander/magister-calendar/issues",
     "email": "lesander@xs4all.nl"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
   }
 }
