@@ -51,6 +51,7 @@ module.exports = {
       process.exit(1);
     }
   },
+  // Load a JSON file.
   loadJSONfile: function(path) {
     // File variable
     var file;
@@ -140,6 +141,9 @@ module.exports = {
     });
     return;
   },
+  // Create a crash report
+  // containing the log
+  // history.
   crashReport: function(loghistory) {
     loghistory += "Magister Calendar has crashed!\nPlease open a new issue at https://git.io/magister with this logfile.\n\n";
     fs.writeFile("crash_" + new Date().getTime() + ".log", loghistory, function(err) {
