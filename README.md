@@ -169,7 +169,7 @@ If you choose to override a default function you should duplicate the file and r
 ---
 The default [`config.json`](config.json) file can be found in the root of the project's folder.
 
-Please note that before setting up a cronjob, it'd be clever to try out Magister Calendar with your configuration manually, by running `node /path/to/magister-calendar.js` and checking the result for any thrown notices, warnings and errors.
+Please note that before setting up a cronjob, it'd be clever to try out Magister Calendar with your configuration manually, by running `node /path/to/magister-calendar.js` (or `npm start`) and checking the result for any thrown notices, warnings and errors.
 
 ### 5. Setting up the cronjob
 Open your favourite cronjob manager and add the command `node /path/to/magister-calendar.js` to the cron file. You should not make the cronjob run more than once per minute, because Magister Calendar can take up to a minute to finish executing.

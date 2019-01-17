@@ -25,6 +25,7 @@
     "url": "https://github.com/lesander/magister-calendar.git"
   },
   "scripts": {
+    "start": "node magister-calendar.js",
     "test": "mocha"
   },
   "bugs": {
