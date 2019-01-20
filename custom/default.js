@@ -5,12 +5,12 @@ module.exports = {
    * biol - pls - v6biol1
    * 'biol' is the abbrevation for Biology which we
    * need to look up our pretty course title.
-   * 
+   *
    * You should change this function depending on how
    * your school's Magister gives the title.
    */
-  getTitle: function(title) {
-    return title.trim();
+  getTitle: function (title) {
+    return title.trim()
   },
 
   /* Unfortunately a lot of school include the breaks
@@ -19,10 +19,10 @@ module.exports = {
    *
    * You can use this function to fix any mistakes there
    * are in beginning/end times.
-   * 
+   *
    * See zwin.js or dspierson.js for examples
    */
-  fixTimes: function(course, appointment) {
-    return appointment;
+  fixTimes: function (course, appointment) {
+    return appointment
   }
 }

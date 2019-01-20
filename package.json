@@ -25,8 +25,8 @@
     "url": "https://github.com/lesander/magister-calendar.git"
   },
   "scripts": {
-    "start": "node magister-calendar.js && standard --fix --verbose '**/*.{html,js,vue,md}",
-    "test": "mocha"
+    "start": "node magister-calendar.js",
+    "test": "mocha && standard --fix --verbose '**/*.{html,js,vue,md}' | snazzy"
   },
   "bugs": {
     "url": "https://github.com/lesander/magister-calendar/issues",
