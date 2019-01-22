@@ -15,7 +15,7 @@
   "dependencies": {
     "google-auth-library": "0.9.x",
     "googleapis": "2.1.x",
-    "magister.js": "2.0.0-alpha.7",
+    "magister.js": "^2.0.0-alpha.8",
     "npm": "^6.5.0",
     "request": "^2.88.0",
     "util": "0.10.x"

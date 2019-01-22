@@ -301,15 +301,23 @@ function requestNewToken (config, callback) {
 
 /* Login to Magister. */
 function magisterLogin () {
-  magister({
-    school: { url: CONFIG.magister_url },
-    username: CONFIG.magister_username,
-    password: CONFIG.magister_password
-  }).then((m) => {
-    fetchAppointments(m)
-  }, (err) => {
-    tools.log('error', 'Could not login to magister:', err.message)
-    process.exit(1)
+  request('https://raw.githubusercontent.com/simplyGits/magisterjs-authcode/master/code.json', { json: true }, (err, res, code) => {
+    var magisterOptions = {
+      school: { url: CONFIG.magister_url },
+      username: CONFIG.magister_username,
+      password: CONFIG.magister_password
+    }
+
+    if (!err && res.statusCode === 200) {
+      magisterOptions.authCode = code
+    }
+
+    magister(magisterOptions).then((m) => {
+      fetchAppointments(m)
+    }, (err) => {
+      tools.log('error', 'Could not login to magister:', err.message)
+      process.exit(1)
+    })
   })
 }
 
