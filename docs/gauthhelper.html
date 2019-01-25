@@ -15,7 +15,6 @@
     </p>
     <input id="code" type="text" value="">
     <script>
-
       // Set the given callback code as value in the input.
       let code = window.location.search.replace('?code=', '')
       const el = document.querySelectorAll('#code')[0]
@@ -25,7 +24,6 @@
       el.addEventListener('click', (event) => {
         event.target.select()
       })
-
     </script>
   </body>
 </html>

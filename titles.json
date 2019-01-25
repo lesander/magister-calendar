@@ -1,0 +1,25 @@
+{
+  "wis" : "Wiskunde",
+  "wisA": "Wiskunde A",
+  "wisB": "Wiskunde B",
+  "wisC": "Wiskunde C",
+  "wisD": "Wiskunde D",
+
+  "netl": "Nederlands",
+  "dutl": "Duits",
+  "entl": "Engels",
+  "fatl": "Frans",
+
+  "ckv" : "CKV",
+  "maat": "Maatschappijleer",
+
+  "schk": "Scheikunde",
+  "biol": "Biologie",
+  "nat" : "Natuurkunde",
+  "nlt" : "NLT",
+
+  "lo"  : "Gym",
+
+  "zu"  : "Zentoruur",
+  "act" : "Activiteit"
+}
