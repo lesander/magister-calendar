@@ -135,6 +135,7 @@ module.exports = {
       else {
         module.exports.log("notice", "Saved crash report to disk.");
       }
+      process.exit(1);
     });
   }
 }
