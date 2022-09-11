@@ -6,6 +6,15 @@
   "magister_url": "",
   "magister_username": "",
   "magister_password": "",
+  "address": {
+    "enabled": true,
+    "default": "Nieuwstraat 50\n4501 BE Oostburg\nNetherlands",
+    "base_on": "location",
+    "alternatives": {
+      "location": "alternative address",
+      "or title": "another address"
+    }
+  },
   "pushover": {
     "enabled": false,
     "token": "",
@@ -14,6 +23,11 @@
   },
   "remove_cancelled_classes": true,
   "blacklist": ["", "KWT"],
+  "cancel_class_if": [
+    "absent",
+    "exemption",
+    "unkown"
+  ],
   "reminders": [
     { "method": "popup", "minutes": "5" }
   ]
